@@ -1,4 +1,4 @@
-1. Installieren des GitHubClients
+1. Installieren des GitHub-Clients
 2. Öffnen der GitShell
 3. mkdir AIDV
 4. cd AIDV
