@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="us">
+	<head>
+		<meta charset="utf-16">
+		<title>Creating a windows-like interface with jQuery UI</title>
+		<link href="css/flick/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+		<script src="js/jquery-1.10.2.js"></script>
+		<script src="js/jquery-ui-1.10.4.custom.js"></script>
+		
+		<script>
+			$(document).ready(function() {
+				$("#accordion").accordion({
+					event:false
+				});
+				$("#accordion button").click(function(e) {
+					e.preventDefault();
+					var delta = ($(this).is('.next') ? 1 : -1);
+					$('#accordion').accordion('option', 'active', (
+						$('#accordion').accordion('option','active') + delta  ));
+				});
+				$("#tabs").tabs();
+				$("#start_button, #end_button").button();
+			});
+		</script>
+	</head>
+	<body>
+		<h1>AIDV</h1>
+		<div id="tabs">
+			<ul>
+				<li><a href="#fragment-1">Eins</a></li>
+				<li><a href="#fragment-2">Zwei</a></li>
+				<li><a href="#fragment-3">Drei</a></li>
+			</ul>
+			<div id="fragment-1">
+				Zum Fortfahren auf Tab "Zwei" klicken.
+			</div>
+			<div id="fragment-2">
+				<div id="accordion">
+					<h3><a href="#">Start</a></h3>
+					<div>
+						Um auf die Ergebnisseite zu gelangen "Start" dr&uumlcken.
+						<br></br>
+						<button id="start_button" class="next">Start</button>
+					</div>
+					<h3><a href="#">Result</a></h3>
+					<div>
+						Hallo, willkommen auf der Ergebnisseite. :)
+						<br></br>
+						<button id="end_button" class="back">Ende</button>
+					</div>
+				</div>
+			</div>
+			<div id="fragment-3">
+				Lorem ipsum dolor sit amet33, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+			</div>
+		</div>
+	</body>
+</html>
