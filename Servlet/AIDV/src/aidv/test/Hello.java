@@ -1,13 +1,28 @@
 package aidv.test;
 
+import aidv.classes.*;
+import aidv.classes.browser.bioontology;
+import aidv.classes.browser.indentifiers_org;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 /**
  * Servlet implementation class Hello
@@ -28,16 +43,15 @@ public class Hello extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter writer = response.getWriter();
 		
-		writer.println("<html>");
-		writer.println("<head><title>Hello World Servlet</title></head>");
-		writer.println("<body>");
-		writer.println("	<h1>Hello World from a Sevlet!</h1>");
-		writer.println("<body>");
-		writer.println("</html>");
-			
-		writer.close();	
+		String uri = request.getParameter("uri");
+		PrintWriter out = response.getWriter();
+	    response.setContentType("text/plain");
+//		String resource1="http://info.identifiers.org/go/GO:0006915.html";
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();		 
+		String json = ow.writeValueAsString(bioontology.get(indentifiers_org.get(uri)));
+	    out.println(json);
+		
 	}
 
 	/**
