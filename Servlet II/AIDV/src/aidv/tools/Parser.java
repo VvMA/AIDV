@@ -8,33 +8,51 @@ import java.util.ArrayList;
 
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.jdom2.Document;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
 public class Parser {
+	HashSet<String> a1 = new HashSet<String>();
+	HashSet<String> a2 = new HashSet<String>();
+	File f;
+	
+	public Parser(File f){
+		this.f=f;
+	}
+	
+	
 
-	private static String[] StringtoArray(String xml) {
+	private String[] StringtoArray(String xml) {
 		String[] result = xml.split("<");
 		return result;
 	}
 
-	private static ArrayList<String> getHTML(String[] split) {
-		//String[] result = new String[split.length];
-		ArrayList<String> a1 = new ArrayList<String>();
+	private void getHTML(String[] split) {
+		
+		//HashSet<String> a1 = new HashSet<String>();
 		String res = "rdf:resource=";
+		String res2 = "sboTerm";
 		for (int i = 0; i < split.length; i++) {
 			if (split[i].contains(res)) {
 				a1.add(split[i].substring(
 						split[i].indexOf("rdf:resource=") + 14,
 						split[i].indexOf("/>") - 2));
 			}
+			if(split[i].contains(res2)){
+				a2.add(split[i].substring(
+						split[i].indexOf("SBO:") ,
+						split[i].indexOf("SBO:")+11 ));
+			}
 		}
 
-		return a1;
+		//return a1;
 	}
 
-	private static String readXMLtoString(File f) throws Exception {
+	private String readXMLtoString(File f) throws Exception {
 		Document doc = null;
 		SAXBuilder builder = new SAXBuilder();
 		doc = builder.build(f);
@@ -42,18 +60,19 @@ public class Parser {
 		return out.outputString(doc);
         }
 	
-	public static String[] sbmltoStringArray(File f) throws Exception{
-		String[] result = getHTML(StringtoArray(readXMLtoString(f))).toArray(new String[0]);
-		
+	public void load() throws Exception{
+		getHTML(StringtoArray(readXMLtoString(f)));
+	}
+	
+	public String[] getIDENT(){
+		String[] result =a1.toArray(new String[0]);
 		return result;
 	}
 	
-
-	//public static void main(String[] args) throws Exception {
-	//	File f = new File("test1.xml");
-	//	for(int i=0;i<sbmltoStringArray(f).length;i++){
-	//		System.out.println(sbmltoStringArray(f)[i]);
-	//	}
-	//}
+	public String[] getSBO(){
+		String[] result =a2.toArray(new String[0]);
+		return result;
+	}
+	
 
 }
