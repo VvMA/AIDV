@@ -20,8 +20,9 @@ public class Parser {
 	HashSet<String> a2 = new HashSet<String>();
 	File f;
 	
-	public Parser(File f){
+	public Parser(File f) throws Exception{
 		this.f=f;
+		load();
 	}
 	
 	

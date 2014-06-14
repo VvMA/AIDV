@@ -7,7 +7,6 @@ public class ParserTest {
 	public static void main(String[] args) throws Exception {
 		File f = new File("test2.xml");
 		Parser p1 = new Parser(f);
-		p1.load();
 		for(int i=0;i<p1.getIDENT().length;i++){
 			System.out.println(""+p1.getIDENT()[i]);
 		}
