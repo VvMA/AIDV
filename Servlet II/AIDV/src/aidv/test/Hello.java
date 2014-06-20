@@ -1,9 +1,6 @@
 package aidv.test;
 
 import aidv.classes.*;
-import aidv.classes.browser.bioontology;
-import aidv.classes.browser.indentifiers_org;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -48,9 +45,9 @@ public class Hello extends HttpServlet {
 		PrintWriter out = response.getWriter();
 	    response.setContentType("text/plain");
 //		String resource1="http://info.identifiers.org/go/GO:0006915.html";
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();		 
-		String json = ow.writeValueAsString(bioontology.get(indentifiers_org.get(uri)));
-	    out.println(json);
+//		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();		 
+//		String json = ow.writeValueAsString(bioontology.get(indentifiers_org.get(uri)));
+//	    out.println(json);
 		
 	}
 

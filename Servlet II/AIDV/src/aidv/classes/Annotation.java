@@ -4,30 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Annotation {
-	String id;
+	
+	String url;
 	String label;
+	String definition;
 	boolean exists;
-	boolean obsolete;
-	String definition;	
-	List<String> physicalLinks;
+	boolean obsolete;	
+	List<Link> resource;
+	List<Link> consider;
 	
-	public String returnasString(){
-		String result="ID: "+id+" /n label :"+label+" /n definition";
-		
-		return result;
+	public Annotation() {	
 	}
-	
-	public String getId() {
-		return id;
+	public Annotation(String url) {
+		this();
+		this.setUrl(url);
 	}
-	public void setId(String id) {
-		this.id = id;
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	public String getLabel() {
 		return label;
 	}
 	public void setLabel(String label) {
 		this.label = label;
+	}
+	public String getDefinition() {
+		return definition;
+	}
+	public void setDefinition(String definition) {
+		this.definition = definition;
 	}
 	public boolean isExists() {
 		return exists;
@@ -41,22 +49,16 @@ public class Annotation {
 	public void setObsolete(boolean obsolete) {
 		this.obsolete = obsolete;
 	}
-	public String getDefinition() {
-		return definition;
+	public List<Link> getResource() {
+		return resource;
 	}
-	public void setDefinition(String definition) {
-		this.definition = definition;
+	public void setResource(List<Link> resource) {
+		this.resource = resource;
 	}
-	public List<String> getPhysicalLinks() {
-		return physicalLinks;
+	public List<Link> getConsider() {
+		return consider;
 	}
-	public void setLinks(List<String> physicalLinks) {
-		this.physicalLinks = physicalLinks;
-	}
-	public void addLink(String link) {
-		
-		if(this.physicalLinks==null) this.physicalLinks=new ArrayList<String>();
-			this.physicalLinks.add(link);
-		
+	public void setConsider(List<Link> consider) {
+		this.consider = consider;
 	}
 }
