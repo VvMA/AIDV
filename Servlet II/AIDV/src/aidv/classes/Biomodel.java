@@ -8,14 +8,34 @@ public class Biomodel {
 	String name;
 	List<ModelElement> functionDefinition;
 	List<ModelElement> unitDefinition;
+	List<ModelElement> compartementType;
+	List<ModelElement> speciesType;
 	List<ModelElement> compartement;
 	List<ModelElement> species;
 	List<ModelElement> parameter;
 	List<ModelElement> initialAssignment;
-	List<ModelElement> rule;
+	List<ModelElement> assignmentRule;
 	List<ModelElement> constraint;
 	List<ModelElement> reaction;
 	List<ModelElement> event;
+	public List<ModelElement> getCompartementType() {
+		return compartementType;
+	}
+	public void setCompartementType(List<ModelElement> compartementType) {
+		this.compartementType = compartementType;
+	}
+	public List<ModelElement> getSpeciesType() {
+		return speciesType;
+	}
+	public void setSpeciesType(List<ModelElement> speciesType) {
+		this.speciesType = speciesType;
+	}
+	public List<ModelElement> getAssignmentRule() {
+		return assignmentRule;
+	}
+	public void setAssignmentRule(List<ModelElement> assignmentRule) {
+		this.assignmentRule = assignmentRule;
+	}
 	
 	public String getId() {
 		return id;
@@ -64,12 +84,6 @@ public class Biomodel {
 	}
 	public void setInitialAssignment(List<ModelElement> initialAssignment) {
 		this.initialAssignment = initialAssignment;
-	}
-	public List<ModelElement> getRule() {
-		return rule;
-	}
-	public void setRule(List<ModelElement> rule) {
-		this.rule = rule;
 	}
 	public List<ModelElement> getConstraint() {
 		return constraint;
