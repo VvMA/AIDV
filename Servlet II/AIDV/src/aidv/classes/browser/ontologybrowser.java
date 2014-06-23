@@ -1,5 +1,19 @@
 package aidv.classes.browser;
 
-public class ontologybrowser {
+import java.io.IOException;
+import java.util.List;
 
+import aidv.classes.Annotation;
+import aidv.classes.Ontology;
+
+public abstract class OntologyBrowser {
+	protected List<Ontology> ontologys;
+	public abstract Annotation get(Annotation annotation) throws IOException;
+
+	public List<Ontology> getOntologys(){
+		return ontologys;
+	}
+	public void setOntologys(List<Ontology> ontologys){
+		this.ontologys=ontologys;
+	}
 }
