@@ -1,17 +1,11 @@
 package aidv.test;
 
 import aidv.classes.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import aidv.classes.browser.Identifiers_org;
+import aidv.classes.browser.OntologyBrowser;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,15 +34,17 @@ public class Hello extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String uri = request.getParameter("uri");
-		PrintWriter out = response.getWriter();
-	    response.setContentType("text/plain");
-//		String resource1="http://info.identifiers.org/go/GO:0006915.html";
-//		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();		 
-//		String json = ow.writeValueAsString(bioontology.get(indentifiers_org.get(uri)));
-//	    out.println(json);
-		
+		if(uri!=null) {
+			PrintWriter out = response.getWriter();
+		    response.setContentType("text/plain");
+			Annotation resource1=new Annotation(uri);
+			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	
+			OntologyBrowser identifiers=new Identifiers_org();
+			Annotation a=identifiers.get(resource1);
+			String json = ow.writeValueAsString(a);
+			out.println(json);
+		}
 	}
 
 	/**

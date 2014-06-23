@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="us">
+<head>
+<meta charset="utf-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+	  var restUri="/AIDV/Hello?uri=";
+	  restUri=restUri+$("input.aSearch").val();
+    $.getJSON(restUri,function(annotation){
+	  $("div.annotation").empty();
+	  $("div.annotation").append("<h2>Searchresults for: "+$("input.aSearch").val()+"</h2>");
+	  $("div.annotation").append("<div class='url'>"+annotation.url+"</div>");
+	  $("div.annotation").append("<div classs='definition'>"+annotation.definition+"</div>");
+	  $("div.annotation").append("<div class='label'>"+annotation.label+"</div>");
+	  if(annotation.resource){
+		var links=annotation.resource;
+	    $.each(links, function(i, item) {
+          $("div.annotation").append("<br><a class='resource' href='"+  item.url+"'>"+item.name+"</a></br>");
+        });
+	  }
+	  if(annotation.consider){
+		var links=annotation.resource;
+	    $.each(links, function(i, item) {
+          $("div.annotation").append("<br><a class='resource' href='"+  item.url+"'>"+item.name+"</a></br>");
+        });
+	  }
+    });
+  });
+});
+</script>
+</head>
+<body>
+<input class="aSearch"></input>
+<button>Search</button>
+<div class='annotation'></div>
+
+</body>
+</html>
