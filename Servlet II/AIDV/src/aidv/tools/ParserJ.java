@@ -38,12 +38,12 @@ public class ParserJ {
 		return build(f);
 	}
 
-	private List<ModelElement> better_read(String getme, File f)
+	private List<ModelElement> better_read(String tag, File f)
 			throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(f);
-		NodeList n_list = document.getElementsByTagName(getme);
+		NodeList n_list = document.getElementsByTagName(tag);
 		List<ModelElement> result = new ArrayList<ModelElement>();
 		int it_o = n_list.getLength();
 		for (int i = 0; i < it_o; i++) {
