@@ -29,28 +29,36 @@ import aidv.classes.ModelElement;
 
 public class ParserJ {
 	File f;
+	Document document;
 	
-	public ParserJ(File f){
+	
+	public ParserJ(File f) throws ParserConfigurationException, SAXException, IOException{
 		this.f = f;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		document = builder.parse(f);
+	
+		
 	}
 	
 	public Biomodel getBiomodel() throws Exception{
-		return build(f);
+		return build(document);
 	}
 
-	private List<ModelElement> better_read(String tag, File f)
+	private List<ModelElement> better_read(String tag, Document d)
 			throws Exception {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		Document document = builder.parse(f);
-		NodeList n_list = document.getElementsByTagName(tag);
+		
+		NodeList n_list = d.getElementsByTagName(tag);
 		List<ModelElement> result = new ArrayList<ModelElement>();
 		int it_o = n_list.getLength();
 		for (int i = 0; i < it_o; i++) {
 			Node node = n_list.item(i);
+			List<String> temp = getHTML(StringtoArray(nodeasString(node)));
+			if(temp.isEmpty()){
+				return null;
+			}
 			Element e = (Element) node;
 			ModelElement m1 = new ModelElement();
-			List<String> temp = getHTML(StringtoArray(nodeasString(node)));
 			List<Annotation> res = new ArrayList<Annotation>();
 			int it = temp.size();
 			for (int j = 0; j < it; j++) {
@@ -66,38 +74,31 @@ public class ParserJ {
 		return result;
 	}
 
-	private Biomodel build(File f) throws Exception {
+	private Biomodel build(Document d) throws Exception {
 
 		Biomodel b1 = new Biomodel();
 
-		String[] name = getName(f);
+		String[] name = getName(d);
 		b1.setId(name[0]);
 		b1.setName(name[1]);
-
-		b1.setFunctionDefinition(better_read("FunctionDefinition", f));
-		b1.setUnitDefinition(better_read("unitDefinition", f));
-		b1.setCompartementType(better_read("compartementType", f));
-		b1.setSpeciesType(better_read("speciesType", f));
-		b1.setCompartement(better_read("compartement", f));
-		b1.setSpecies(better_read("species", f));
-		b1.setParameter(better_read("parameter", f));
-		b1.setInitialAssignment(better_read("initialAssignment", f));
-		b1.setAssignmentRule(better_read("assignmentRule", f));
-		b1.setConstraint(better_read("constraint", f));
-		b1.setReaction(better_read("reaction", f));
-		b1.setEvent(better_read("event", f));
+		b1.setFunctionDefinition(better_read("FunctionDefinition", d));
+		b1.setUnitDefinition(better_read("unitDefinition", d));
+		b1.setCompartementType(better_read("compartementType", d));
+		b1.setSpeciesType(better_read("speciesType", d));
+		b1.setCompartement(better_read("compartement", d));
+		b1.setSpecies(better_read("species", d));
+		b1.setParameter(better_read("parameter", d));
+		b1.setInitialAssignment(better_read("initialAssignment", d));
+		b1.setAssignmentRule(better_read("assignmentRule", d));
+		b1.setConstraint(better_read("constraint", d));
+		b1.setReaction(better_read("reaction", d));
+		b1.setEvent(better_read("event", d));
 
 		return b1;
 	}
 
-	private String[] getName(File f) throws SAXException, IOException,
-			ParserConfigurationException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder;
-
-		builder = factory.newDocumentBuilder();
-		Document document = builder.parse(f);
-		NodeList m_list = document.getElementsByTagName("model");
+	private String[] getName(Document d) {
+		NodeList m_list = d.getElementsByTagName("model");
 		String[] result = new String[2];
 		result[0] = "not available";
 		result[1] = "not available";

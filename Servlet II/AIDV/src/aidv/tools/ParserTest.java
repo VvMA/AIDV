@@ -9,7 +9,7 @@ import aidv.classes.Biomodel;
 public class ParserTest {
 
 	public static void main(String[] args) throws Exception {
-		File f = new File("test2.xml");
+		File f = new File("test3.xml");
 		ParserJ p1 = new ParserJ(f);
 		Biomodel b1 = p1.getBiomodel();
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	
