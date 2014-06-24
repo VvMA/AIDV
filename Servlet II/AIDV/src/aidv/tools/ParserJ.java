@@ -44,9 +44,7 @@ public class ParserJ {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.parse(f);
 		NodeList n_list = document.getElementsByTagName(getme);
-
 		List<ModelElement> result = new ArrayList<ModelElement>();
-
 		int it_o = n_list.getLength();
 		for (int i = 0; i < it_o; i++) {
 			Node node = n_list.item(i);
@@ -60,11 +58,11 @@ public class ParserJ {
 				res.add(a1);
 			}
 			m1.setId(e.getAttribute("id"));
+			if(e.hasAttribute("name"))
+				m1.setName(e.getAttribute("name"));
 			m1.setAnnotations(res);
-
 			result.add(m1);
 		}
-
 		return result;
 	}
 
@@ -140,7 +138,7 @@ public class ParserJ {
 						split[i].indexOf("/>") - 2));
 			}
 			if (split[i].contains(res2)) {
-				a1.add(split[i].substring(split[i].indexOf("SBO:"),
+				a1.add("http://identifiers.org/biomodels.sbo/"+split[i].substring(split[i].indexOf("SBO:"),
 						split[i].indexOf("SBO:") + 11));
 			}
 		}
