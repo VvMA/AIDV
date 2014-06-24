@@ -37,8 +37,6 @@ public class ParserJ {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		document = builder.parse(f);
-	
-		
 	}
 	
 	public Biomodel getBiomodel() throws Exception{
@@ -93,7 +91,6 @@ public class ParserJ {
 		b1.setConstraint(better_read("constraint", d));
 		b1.setReaction(better_read("reaction", d));
 		b1.setEvent(better_read("event", d));
-
 		return b1;
 	}
 

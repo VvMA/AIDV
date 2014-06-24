@@ -7,9 +7,8 @@ import aidv.classes.Biomodel;
 // Testfall behandelt nur Species (wird alles einziges ausgegeben)
 // Methode nur zum Testen und uu nicht ressourcenschonend 
 public class ParserTest {
-
 	public static void main(String[] args) throws Exception {
-		File f = new File("test3.xml");
+		File f = new File("test2.xml");
 		ParserJ p1 = new ParserJ(f);
 		Biomodel b1 = p1.getBiomodel();
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	
