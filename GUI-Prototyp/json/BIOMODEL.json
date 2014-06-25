@@ -1,0 +1,260 @@
+{
+  "id" : "BIOMD0000000002",
+  "name" : "Edelstein1996 - EPSP ACh species",
+  "functionDefinition" : [ ],
+  "unitDefinition" : [ ],
+  "compartementType" : [ ],
+  "speciesType" : [ ],
+  "compartement" : [ ],
+  "species" : [ {
+    "id" : "BLL",
+    "name" : "BasalACh2",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "IL",
+    "name" : "IntermediateACh",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "AL",
+    "name" : "ActiveACh",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "A",
+    "name" : "Active",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "BL",
+    "name" : "BasalACh",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "B",
+    "name" : "Basal",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "DLL",
+    "name" : "DesensitisedACh2",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "D",
+    "name" : "Desensitised",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "ILL",
+    "name" : "IntermediateACh2",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "DL",
+    "name" : "DesensitisedACh",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "I",
+    "name" : "Intermediate",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "ALL",
+    "name" : "ActiveACh2",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/interpro/IPR00239",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/go/GO:000589",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  }, {
+    "id" : "L",
+    "name" : "ACh",
+    "annotations" : [ {
+      "url" : "http://identifiers.org/chebi/CHEBI:1535",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    }, {
+      "url" : "http://identifiers.org/kegg.compound/C0199",
+      "label" : null,
+      "definition" : null,
+      "exists" : false,
+      "obsolete" : false,
+      "resource" : null,
+      "consider" : null
+    } ]
+  } ],
+  "parameter" : null,
+  "initialAssignment" : [ ],
+  "assignmentRule" : [ ],
+  "constraint" : [ ],
+  "reaction" : null,
+  "event" : [ ]
+}

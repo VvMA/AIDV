@@ -2,7 +2,7 @@
 <html lang="us">
 	<head>
 		<meta charset="utf-16">
-		<title>Creating a windows-like interface with jQuery UI</title>
+		<title>AIDV</title>
 		<link href="css/flick/jquery-ui-1.10.4.custom.css" rel="stylesheet">
 		<link href="css/jquery.DataTables.css" rel="stylesheet">
 		<script src="js/jquery-1.10.2.js"></script>
@@ -12,93 +12,35 @@
 		<script>
 			$(document).ready(function() {
 				
-				$("#accordion, #accordion_2").accordion({
+				$("#bioModell, #accordion_2").accordion({
 					event:false
 				});
-				var t = $("#example").DataTable();
-				var counter = 1;
- 
-				$('#addRow').on( 'click', function () {
-					t.row.add( [
-						counter +'.1',
-						counter +'.2',
-						counter +'.3',
-						counter +'.4',
-						counter +'.5',
-						counter +".6"
-					] ).draw();
-			 
-					counter++;
-				} );
- 
-				// Automatically add a first row of data
-				//$('#addRow').click();
+				var t_bio = $("#example").DataTable({
+					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+						switch(aData[7]){
+							case false:
+								$(nRow).css('color', 'green')
+								break;
+							case true:
+								$(nRow).css('color', 'red')
+								break;
+						}
+					}
+				});
+				var t_anno = $("#t_anno").DataTable({
+					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+						switch(aData[5]){
+							case false:
+								$(nRow).css('color', 'green')
+								break;
+							case true:
+								$(nRow).css('color', 'red')
+								break;
+						}
+					}
+				});
 				
-				$("#accordion button").click(function(e) {
-					e.preventDefault();
-					if($(this).is('.do')){
-						("#addRow").click();
-					}
-					var delta = ($(this).is('.next') ? 1 : -1);
-					$('#accordion').accordion('option', 'active', (
-						$('#accordion').accordion('option','active') + delta )
-					);
-					if(delta==1){
-						('#addRow').click();
-					}
-					/**if(delta==1){
-						var url="json/test.json";
-						$.getJSON(url , function(data) {
-							var tbl_body = "<thead><tr><th>First name</th><th>Last name</th><th>Position</th><th>Office</th><th>Start Date</th><th>Salary</th></tr></thead>";
-							$.each(data, function() {
-								var tbl_row = "";
-								$.each(this, function(k , v) {
-									tbl_row += "<tr>";
-									tbl_row += "<td>"+v.first_name+"</td>";
-									tbl_row += "<td>"+v.first_name+"</td>";
-									tbl_row += "<td>"+v.first_name+"</td>";
-									tbl_row += "<td>"+v.first_name+"</td>";
-									tbl_row += "<td>"+v.first_name+"</td>";
-									tbl_row += "<td>"+v.first_name+"</td>";
-									tbl_row += "</tr>";
-									//$("#example").append(tbl_row);
-									t.row.add( [
-										"La",
-										"Bla",
-										"BLA",
-										"Blala",
-										"BlA",
-										"6"
-									] ).draw();
-								})
-								tbl_body += "<tr>"+tbl_row+"</tr>";                 
-							})
-							//$("#example").append(tbl_body);
-							/**var tr;
-							for (var i = 0; i < data.length; i++) {
-								tr = $("<tr/>");
-								tr.append("<td>" + data[i].first_name + "</td>");
-								tr.append("<td>" + data[i].last_name + "</td>");
-								tr.append("<td>" + data[i].position + "</td>");
-								tr.append("<td>" + data[i].office + "</td>");
-								tr.append("<td>" + data[i].start_date + "</td>");
-								tr.append("<td>" + data[i].salary + "</td>");
-								$("#example").append(tr);
-							}
-						});
-					}*/
-				});
-				$("#accordion_2 button").click(function(e) {
-					e.preventDefault();
-					var delta = ($(this).is('.next') ? 1 : -1);
-					$('#accordion_2').accordion('option', 'active', (
-						$('#accordion_2').accordion('option','active') + delta )
-					);
-					//TODO
-				});
-				$("#tabs").tabs();
-				$("#start_button, #end_button, #addRow").button();
-				/**var t = $("#example").dataTable( {
+				var t = $("#example2").DataTable( {
 					/**columnDefs: [ {
 						targets: [ 0 ],
 						orderData: [ 0, 1 ]
@@ -108,8 +50,125 @@
 						}, {
 						targets: [ 4 ],
 						orderData: [ 4, 0 ]
-					} ]*
-				} );*/
+					} ]*/
+					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+						switch(aData[0]){
+							case 'AAA':
+								$(nRow).css('color', 'red')
+								break;
+							case 'BBB':
+								$(nRow).css('color', 'green')
+								break;
+							case 'CCC':
+								$(nRow).css('color', 'blue')
+								break;
+						}
+					}
+				});
+				
+				var counter = 1;
+ 
+				$('#addRow').on( 'click', function () {
+					var url="json/BIOMODEL.json";
+					var word="";
+					$.getJSON(url , function(model) {
+						$.each(model.species, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								word+=" key: "+m+" value: "+n.url;
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+							
+							counter++;
+						})
+						window.alert(word);
+					});
+				} );
+				
+				$("#addRow_anno").on( 'click', function () {
+					var url="json/annotation.json";
+					var anno_url="", consider="";
+					$.getJSON(url , function(anno) {
+						$.each(anno.resource, function(k,v) {
+							anno_url+="<br><a class='resource' href='"+v.url+"'>"+v.name+"</a></br>";
+							anno_url+=" ";
+						})
+						if(anno.consider!=null){
+							$.each(anno.consider, function(k,v) {
+								consider+="<br><a class='resource' href='"+v.url+"'>"+v.name+"</a></br>";
+							})
+						} else {
+							consider="Keine Alternativen verf&uumlgbar.";
+						}
+						t_anno.row.add( [
+							anno.url,
+							anno.label,
+							anno.definition,
+							anno_url,
+							anno.exists,
+							anno.obsolete,
+							consider
+						] ).draw();
+					});
+				} );
+				
+				$("#bioModell button").click(function(e) {
+					e.preventDefault();
+					if($(this).is('.do')){
+						("#addRow").click();
+					}
+					var delta = ($(this).is('.next') ? 1 : -1);
+					$('#bioModell').accordion('option', 'active', (
+						$('#bioModell').accordion('option','active') + delta )
+					);
+					
+					if(delta==1){
+						var url="json/BIOMODEL.json";
+						$.getJSON(url , function(data) {
+							$("#model_id").html(data.id+": "+data.name);
+						});
+						//('#addRow').click();
+					}
+					
+				});
+				$("#accordion_2 button").click(function(e) {
+					e.preventDefault();
+					if($(this).is('.do')){
+						("#addRow_anno").click();
+					}
+					var delta = ($(this).is('.next') ? 1 : -1);
+					$('#accordion_2').accordion('option', 'active', (
+						$('#accordion_2').accordion('option','active') + delta )
+					);
+					if(delta==1){
+						var url="json/annotation.json";
+						$.getJSON(url , function(data) {
+							$("#anno_id").html("Label: "+data.label);
+						});
+						//('#addRow').click();
+					}
+				});
+				
+				$("#tabs").tabs();
+				
+				$("#start_button, #end_button, #search_button, #addRow, #addRow_anno").button();
+				$("#start_button").click(function(){       
+					$("div.biomodell").append("Ihre Suche nach: "+$("#search_bio").val()+" lieferte folgende Ergebnis.");
+					$("#search_bio").val("");
+				});
+				$("#search_button").click(function(){       
+					$("div.biomodell").append("Ihre Suche nach: "+$("#search_anno").val()+" lieferte folgende Ergebnis.");
+					$("#search_anno").val("");
+				});
 			});
 		</script>
 	</head>
@@ -118,33 +177,42 @@
 		<div id="tabs">
 			<ul>
 				<li><a href="#fragment-1">Eins</a></li>
-				<li><a href="#fragment-2">Zwei</a></li>
-				<li><a href="#fragment-3">Drei</a></li>
+				<li><a href="#fragment-2">BioModell</a></li>
+				<li><a href="#fragment-3">Annotation</a></li>
 			</ul>
 			<div id="fragment-1">
 				Zum Fortfahren auf Tab "Zwei" klicken.
 			</div>
 			<div id="fragment-2">
-				<div id="accordion">
+				<div id="bioModell">
 					<h3><a href="#">Start</a></h3>
 					<div>
-						Um auf die Ergebnisseite zu gelangen "Start" dr&uumlcken.
+						Bitte ein BioModell zum &Uumlberpr&uumlfen eingeben.
 						<br></br>
-						<button id="start_button" class="next">Start</button>
+						<div>
+							<input id="search_bio" value="BIOMD0000000002"></input>
+							<button id="start_button" class="next">Search</button>
+						</div>
 					</div>
 					<h3><a href="#">Result</a></h3>
 					<div>
-						Hallo, willkommen auf der Ergebnisseite. :)
-						<br></br>
+						<div class="biomodell">
+							Hallo, willkommen auf der Ergebnisseite. :)
+							<br></br>
+						</div>
+						<h1 id="model_id"></h1>
 						<table id="example" class="display" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th>First name</th>
-									<th>Last name</th>
-									<th>Position</th>
-									<th>Office</th>
-									<th>Start Date</th>
-									<th>Salary</th>
+									<th>ID</th>
+									<th>Name</th>
+									<th>URL</th>
+									<th>Label</th>
+									<th>Definition</th>
+									<th>Resource</th>
+									<th>Exists</th>
+									<th>Obsolete</th>
+									<th>Consider</th>
 								</tr>
 							</thead>
 							
@@ -160,13 +228,64 @@
 				<div id="accordion_2">
 					<h3><a href="#">Start</a></h3>
 					<div>
-						Um auf die Ergebnisseite zu gelangen "Start" dr&uumlcken.
+						Bitte geben eine Annotation zum &Uumlberpr&uumlfen ein.
 						<br></br>
-						<button id="start_button" class="next">Start</button>
+						<div>
+							<input id="search_anno" value="GO:0006915"></input>
+							<button id="search_button" class="next">Search</button>
+						</div>
 					</div>
 					<h3><a href="#">Result</a></h3>
 					<div>
-						Hallo, willkommen auf der Ergebnisseite. :)
+						<div class="annotation">
+							Hallo, willkommen auf der Ergebnisseite. :)
+							<br></br>
+						</div>
+						<h1 id="anno_id"></h1>
+						<table id="t_anno" class="display" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th>URL</th>
+									<th>Label</th>
+									<th>Definition</th>
+									<th>Resource</th>
+									<th>Exists</th>
+									<th>Obsolete</th>
+									<th>Consider</th>
+								</tr>
+							</thead>
+							
+						</table>
+						<br></br>
+						<button id="addRow_anno" class="do">Do</button>
+						<br></br>
+						<br></br>
+						<table id="example2" class="display" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th>Column 1</th>
+									<th>Column 2</th>
+									<th>Column 3</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>AAA</td>
+									<td>AAA</td>
+									<td>BBB</td>
+								</tr>
+								<tr>
+									<td>BBB</td>
+									<td>GGG</td>
+									<td>OOO</td>
+								</tr>
+								<tr>
+									<td>CCC</td>
+									<td>YYY</td>
+									<td>LLL</td>
+								</tr>
+							</tbody>
+						</table>
 						<br></br>
 						Lorem ipsum dolor sit amet33, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
 						<br></br>

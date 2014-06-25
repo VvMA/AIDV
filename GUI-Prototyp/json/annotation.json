@@ -1,0 +1,18 @@
+{
+  "url": "http://identifiers.org/go/GO:0006915",
+  "label": "apoptotic process",
+  "definition": "A programmed cell death process which begins when a cell receives an internal (e.g. DNA damage) or external signal (e.g. an extracellular death ligand), and proceeds through a series of biochemical events (signaling pathway phase) which trigger an execution phase. The execution phase is the last step of an apoptotic process, and is typically characterized by rounding-up of the cell, retraction of pseudopodes, reduction of cellular volume (pyknosis), chromatin condensation, nuclear fragmentation (karyorrhexis), plasma membrane blebbing and fragmentation of the cell into apoptotic bodies. When the execution phase is completed, the cell has died. Source: GOC:tb, PMID:18846107, GOC:mtg_apoptosis, ISBN:0198506732, GOC:dhl, GOC:ecd, PMID:21494263, GOC:go_curators",
+  "resource": [
+    {
+      "name": "AmiGO",
+      "url":"http://amigo.geneontology.org/cgi-bin/amigo/term_details?term=GO:0006915"
+    },
+	{
+      "name": "GO through OLS",
+      "url":"http://www.ebi.ac.uk/ontology-lookup/?termId=GO:0042166"
+    }
+  ],
+  "exists": true,
+  "obsolete": false,
+  "consider": null
+}
