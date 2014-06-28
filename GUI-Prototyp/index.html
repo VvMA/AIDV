@@ -1,19 +1,18 @@
 <!doctype html>
 <html lang="us">
 	<head>
-		<meta charset="utf-16">
+		<meta charset="utf-8">
 		<title>AIDV</title>
 		<link href="css/flick/jquery-ui-1.10.4.custom.css" rel="stylesheet">
 		<link href="css/jquery.DataTables.css" rel="stylesheet">
 		<script src="js/jquery-1.10.2.js"></script>
 		<script src="js/jquery-ui-1.10.4.custom.js"></script>
-		<script src="js/jquery.dataTables.js"></script>
-		
+		<script src="js/jquery.dataTables.js"></script>		
 		<script>
-			$(document).ready(function() {
-				
+			$(document).ready(function() {				
 				$("#bioModell, #accordion_2").accordion({
-					event:false
+					event:false,
+					heightStyle: "content"
 				});
 				var t_bio = $("#example").DataTable({
 					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
@@ -38,34 +37,7 @@
 								break;
 						}
 					}
-				});
-				
-				var t = $("#example2").DataTable( {
-					/**columnDefs: [ {
-						targets: [ 0 ],
-						orderData: [ 0, 1 ]
-						}, {
-						targets: [ 1 ],
-						orderData: [ 1, 0 ]
-						}, {
-						targets: [ 4 ],
-						orderData: [ 4, 0 ]
-					} ]*/
-					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-						switch(aData[0]){
-							case 'AAA':
-								$(nRow).css('color', 'red')
-								break;
-							case 'BBB':
-								$(nRow).css('color', 'green')
-								break;
-							case 'CCC':
-								$(nRow).css('color', 'blue')
-								break;
-						}
-					}
-				});
-				
+				});				
 				var counter = 1;
  
 				$('#addRow').on( 'click', function () {
@@ -90,7 +62,7 @@
 							
 							counter++;
 						})
-						window.alert(word);
+						//window.alert(word);
 					});
 				} );
 				
@@ -173,16 +145,12 @@
 		</script>
 	</head>
 	<body>
-		<h1>AIDV</h1>
+		<h1>AIDV brought to you by SEMS(Logo)</h1>
 		<div id="tabs">
 			<ul>
-				<li><a href="#fragment-1">Eins</a></li>
 				<li><a href="#fragment-2">BioModell</a></li>
 				<li><a href="#fragment-3">Annotation</a></li>
 			</ul>
-			<div id="fragment-1">
-				Zum Fortfahren auf Tab "Zwei" klicken.
-			</div>
 			<div id="fragment-2">
 				<div id="bioModell">
 					<h3><a href="#">Start</a></h3>
@@ -214,8 +182,7 @@
 									<th>Obsolete</th>
 									<th>Consider</th>
 								</tr>
-							</thead>
-							
+							</thead>							
 						</table>
 						<br></br>
 						<button id="addRow" class="do">Do</button>
@@ -258,37 +225,6 @@
 						</table>
 						<br></br>
 						<button id="addRow_anno" class="do">Do</button>
-						<br></br>
-						<br></br>
-						<table id="example2" class="display" cellspacing="0" width="100%">
-							<thead>
-								<tr>
-									<th>Column 1</th>
-									<th>Column 2</th>
-									<th>Column 3</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>AAA</td>
-									<td>AAA</td>
-									<td>BBB</td>
-								</tr>
-								<tr>
-									<td>BBB</td>
-									<td>GGG</td>
-									<td>OOO</td>
-								</tr>
-								<tr>
-									<td>CCC</td>
-									<td>YYY</td>
-									<td>LLL</td>
-								</tr>
-							</tbody>
-						</table>
-						<br></br>
-						Lorem ipsum dolor sit amet33, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-						<br></br>
 						<button id="end_button" class="back">Ende</button>
 					</div>
 				</div>
