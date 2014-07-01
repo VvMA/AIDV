@@ -1,19 +1,27 @@
 <!doctype html>
 <html lang="us">
 	<head>
-		<meta charset="utf-8">
+		<meta charset="utf-16">
 		<title>AIDV</title>
 		<link href="css/flick/jquery-ui-1.10.4.custom.css" rel="stylesheet">
 		<link href="css/jquery.DataTables.css" rel="stylesheet">
 		<script src="js/jquery-1.10.2.js"></script>
 		<script src="js/jquery-ui-1.10.4.custom.js"></script>
-		<script src="js/jquery.dataTables.js"></script>		
+		<script src="js/jquery.dataTables.js"></script>
+		
 		<script>
-			$(document).ready(function() {				
-				$("#bioModell, #accordion_2").accordion({
-					event:false,
+			$(document).ready(function() {
+			
+				$("#bioModell").accordion({
+					//event:false,
 					heightStyle: "content"
 				});
+				$("#accordion_2").accordion({
+					//event:false,
+					header: "> div > h3",
+					heightStyle: "content"
+				});
+				
 				var t_bio = $("#example").DataTable({
 					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 						switch(aData[7]){
@@ -36,8 +44,12 @@
 								$(nRow).css('color', 'red')
 								break;
 						}
+						// Einfügen einer Bilddatei in Spalte
+						/**imgLink="jack.jpg";
+						var imgTag = '<img src="' + imgLink + '"/>';
+						$('td:eq(2)', nRow).html(imgTag);*/
 					}
-				});				
+				});
 				var counter = 1;
  
 				$('#addRow').on( 'click', function () {
@@ -62,10 +74,9 @@
 							
 							counter++;
 						})
-						//window.alert(word);
+						window.alert(word);
 					});
 				} );
-				
 				$("#addRow_anno").on( 'click', function () {
 					var url="json/annotation.json";
 					var anno_url="", consider="";
@@ -132,7 +143,7 @@
 				
 				$("#tabs").tabs();
 				
-				$("#start_button, #end_button, #search_button, #addRow, #addRow_anno").button();
+				$("#start_button, #end_button, #search_button, #addRow, #addRow_anno, #addAnno").button();
 				$("#start_button").click(function(){       
 					$("div.biomodell").append("Ihre Suche nach: "+$("#search_bio").val()+" lieferte folgende Ergebnis.");
 					$("#search_bio").val("");
@@ -141,11 +152,50 @@
 					$("div.biomodell").append("Ihre Suche nach: "+$("#search_anno").val()+" lieferte folgende Ergebnis.");
 					$("#search_anno").val("");
 				});
+				
+				$('#addAnno').click( function() {
+					var newDiv = "<div><h3>";
+					var url="json/annotation.json";
+					$.getJSON(url , function(data) {
+						newDiv+=data.label;
+						newDiv+="</h3><div><div><h3>Defintion:</h3>";
+						newDiv+=data.definition;
+						newDiv+="</div><div><h3>Resource:</h3>";
+						if(data.resource!=null){
+							$.each(data.resource, function(k,v) {
+								newDiv+="<a class='resource' href='"+v.url+"'>"+v.name+"</a>";
+								if(k<(data.resource.length-1)){
+									newDiv+="<br></br>";
+								}
+							})
+						} else {
+							newDiv+="Keine Resourcen verf&uumlgbar.";
+						}
+						newDiv+="</div><div><h3>Obsolete:</h3>";
+						newDiv+=data.obsolete;
+						newDiv+="</div><div><h3>Exists:</h3>";
+						newDiv+=data.exists;
+						newDiv+="</div><div><h3>Consider:</h3>";
+						if(data.consider!=null){
+							$.each(data.consider, function(k,v) {
+								newDiv+="<a class='resource' href='"+v.url+"'>"+v.name+"</a>";
+								if(k<(data.consider.length-1)){
+									newDiv+="<br></br>";
+								}
+							})
+						} else {
+							newDiv+="Keine Alternativen verf&uumlgbar.";
+						}
+						newDiv+="</div></div></div>";
+						$('div.accordion_2').append(newDiv)
+						$('div.accordion_2').accordion("refresh")
+					});
+				});
 			});
 		</script>
 	</head>
 	<body>
-		<h1>AIDV brought to you by SEMS(Logo)</h1>
+		<h1>AIDV</h1>
 		<div id="tabs">
 			<ul>
 				<li><a href="#fragment-2">BioModell</a></li>
@@ -182,7 +232,8 @@
 									<th>Obsolete</th>
 									<th>Consider</th>
 								</tr>
-							</thead>							
+							</thead>
+							
 						</table>
 						<br></br>
 						<button id="addRow" class="do">Do</button>
@@ -192,40 +243,47 @@
 				</div>
 			</div>
 			<div id="fragment-3">
-				<div id="accordion_2">
-					<h3><a href="#">Start</a></h3>
+				<div id="accordion_2" class="accordion_2">
 					<div>
-						Bitte geben eine Annotation zum &Uumlberpr&uumlfen ein.
-						<br></br>
+						<h3><a href="#">Start</a></h3>
 						<div>
-							<input id="search_anno" value="GO:0006915"></input>
-							<button id="search_button" class="next">Search</button>
+							Bitte geben eine Annotation zum &Uumlberpr&uumlfen ein.
+							<br></br>
+							<div>
+								<input id="search_anno" value="GO:0006915"></input>
+								<button id="addAnno" class="next">Search</button>
+							</div>
 						</div>
 					</div>
-					<h3><a href="#">Result</a></h3>
 					<div>
-						<div class="annotation">
-							Hallo, willkommen auf der Ergebnisseite. :)
+						<h3><a href="#">Result</a></h3>
+						<div>
+							<div class="annotation">
+								Hallo, willkommen auf der Ergebnisseite. :)
+								<br></br>
+							</div>
+							<h1 id="anno_id"></h1>
+							<table id="t_anno" class="display" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>URL</th>
+										<th>Label</th>
+										<th>Definition</th>
+										<th>Resource</th>
+										<th>Exists</th>
+										<th>Obsolete</th>
+										<th>Consider</th>
+									</tr>
+								</thead>
+								
+							</table>
 							<br></br>
+							<button id="addRow_anno" class="do">Do</button>
+							<br></br>
+							<button id="addAccordion">Add Accordion</button>
+							<br></br>
+							<button id="end_button" class="back">Ende</button>
 						</div>
-						<h1 id="anno_id"></h1>
-						<table id="t_anno" class="display" cellspacing="0" width="100%">
-							<thead>
-								<tr>
-									<th>URL</th>
-									<th>Label</th>
-									<th>Definition</th>
-									<th>Resource</th>
-									<th>Exists</th>
-									<th>Obsolete</th>
-									<th>Consider</th>
-								</tr>
-							</thead>
-							
-						</table>
-						<br></br>
-						<button id="addRow_anno" class="do">Do</button>
-						<button id="end_button" class="back">Ende</button>
 					</div>
 				</div>
 			</div>
