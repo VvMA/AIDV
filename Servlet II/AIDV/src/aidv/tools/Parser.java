@@ -1,15 +1,7 @@
 package aidv.tools;
 
 import java.io.File;
-import java.util.ArrayList;
-
-
-
-
-
-
 import java.util.HashSet;
-import java.util.Set;
 
 import org.jdom2.Document;
 import org.jdom2.input.SAXBuilder;

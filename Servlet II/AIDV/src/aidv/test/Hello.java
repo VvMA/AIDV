@@ -1,16 +1,15 @@
 package aidv.test;
 
-import aidv.classes.*;
-import aidv.classes.browser.Identifiers_org;
-import aidv.classes.browser.OntologyBrowser;
-
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import aidv.Validator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -27,24 +26,28 @@ public class Hello extends HttpServlet {
      */
     public Hello() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String uri = request.getParameter("uri");
 		if(uri!=null) {
 			PrintWriter out = response.getWriter();
 		    response.setContentType("text/plain");
-			Annotation resource1=new Annotation(uri);
-			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	
-			OntologyBrowser identifiers=new Identifiers_org();
-			Annotation a=identifiers.get(resource1);
-			String json = ow.writeValueAsString(a);
+			out.println(Validator.getAnnotation(uri));
+		}
+		String biomodel = request.getParameter("biomodel");
+		if(biomodel!=null) {
+			PrintWriter out = response.getWriter();
+		    response.setContentType("text/plain");
+			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();				
+			String json = ow.writeValueAsString(Validator.getBiomodel(null));
 			out.println(json);
 		}
+		
 	}
 
 	/**

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Annotation {
 	
+	public String id;
 	String url;
 	String label;
 	String definition;
