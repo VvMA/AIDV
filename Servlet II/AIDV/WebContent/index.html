@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="us">
 	<head>
-		<meta charset="utf-16">
+		<meta charset="utf-8">
 		<title>AIDV</title>
 		<link href="css/flick/jquery-ui-1.10.4.custom.css" rel="stylesheet">
 		<link href="css/jquery.DataTables.css" rel="stylesheet">
@@ -26,7 +26,7 @@
 					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 						switch(aData[7]){
 							case false:
-								// Einfügen einer Bilddatei in Spalte
+								// Einfï¿½gen einer Bilddatei in Spalte
 								/**imgLink="jack.jpg";
 								var imgTag = '<img src="' + imgLink + '"/>';
 								$('td:eq(2)', nRow).html(imgTag);*/
@@ -43,7 +43,7 @@
 					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 						switch(aData[7]){
 							case false:
-								// Einfügen einer Bilddatei in Spalte
+								// Einfï¿½gen einer Bilddatei in Spalte
 								/**imgLink="jack.jpg";
 								var imgTag = '<img src="' + imgLink + '"/>';
 								$('td:eq(2)', nRow).html(imgTag);*/
@@ -128,10 +128,24 @@
 				
 				$("#upload_button").click (function () {
 					$("#search_upload").val("");
+					$.ajax({
+					   type: "POST",
+					   url: 'foo.bar', 
+					   processData: false,
+					   data: xmlData,
+					   success: function(response){
+						   console.log(response);
+					   },
+					   error: function(response) {
+						   console.log(response);
+					   }
+					 });
+
+
 					/**var url="json/BIOMODEL.json";
 					var bio="";
 					$.getJSON(url , function(model) {
-						$("div.biomodell").append("Ihre Validierungsanfrage für "+$("#search_upload").val()+" lieferte folgende Ergebnis.");
+						$("div.biomodell").append("The validation-request for your biomodel : "+$("#search_upload").val()+" returns the following results");
 						$.each(model.species, function(k,v) {
 							$.each(this.annotations, function(m,n) {
 								bio+=" key: "+m+" value: "+n.url;
@@ -247,12 +261,14 @@
 				<div id="upload">
 					<h3><a href="#">Start</a></h3>
 					<div>
-						Bitte ein BioModell zum &Uumlberpr&uumlfen eingeben.
 						<br></br>
 						<div>
-							<input id="search_upload" value="C:\Bla"></input>
-							<button id="upload_button" class="next">Upload</button>
-						</div>
+						<form action="/validate.html" method="post" enctype="multipart/form-data">
+						<p>Please select a XML-file<br>
+						<input id="search_upload" name="biomodel" type="file" size="50" maxlength="100000" accept="application/xml">
+						<input id="upload_button" type="button" class "next" value="Upload"/>	
+						</form>
+					</div>
 					</div>
 					<h3><a href="#">Result</a></h3>
 					<div>
