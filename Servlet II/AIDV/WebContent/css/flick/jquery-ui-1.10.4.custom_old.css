@@ -863,7 +863,7 @@ body .ui-tooltip {
 .ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited {
-	color: #00dddd;
+	color: #ff0084;
 	text-decoration: none;
 }
 

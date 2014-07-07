@@ -23,18 +23,67 @@
 					heightStyle: "content"
 				});
 				
+				var t_anno = $("#anno_table").DataTable({
+					"columnDefs": [ {
+						"targets": [ 0,3 ],
+						"visible": false
+					}],
+					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+						switch(aData[5]){
+							case true:
+								$(nRow).css('color', 'green')
+								$("td:eq(3)", nRow).html("");
+								break;
+							case false:
+								// Einfügen einer Bilddatei in Spalte
+								imgLink="att.jpg";
+								var imgTag = '<img src="' + imgLink + '"/>';
+								$("td:eq(3)", nRow).html(imgTag);
+								$(nRow).css('color', 'red')
+								break;
+						}
+						switch(aData[6]){
+							case true:
+								// Einfügen einer Bilddatei in Spalte
+								imgLink="att.jpg";
+								var imgTag = '<img src="' + imgLink + '"/>';
+								$('td:eq(4)', nRow).html(imgTag);
+								$(nRow).css('color', 'red')
+								break;
+							case false:
+								$(nRow).css("color", "green")
+								$("td:eq(4)", nRow).html("");
+								break;
+						}
+					}
+				});
+				
 				var t_bio = $("#bio_table").DataTable({
 					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-						switch(aData[7]){
-							case false:
-								// Einf�gen einer Bilddatei in Spalte
-								/**imgLink="jack.jpg";
-								var imgTag = '<img src="' + imgLink + '"/>';
-								$('td:eq(2)', nRow).html(imgTag);*/
-								$(nRow).css('color', 'green')
-								break;
+						switch(aData[6]){
 							case true:
+								$(nRow).css('color', 'green')
+								$("td:eq(6)", nRow).html("");
+								break;
+							case false:
+								// Einfügen einer Bilddatei in Spalte
+								imgLink="att.jpg";
+								var imgTag = '<img src="' + imgLink + '"/>';
+								$("td:eq(6)", nRow).html(imgTag);
 								$(nRow).css('color', 'red')
+								break;
+						}
+						switch(aData[7]){
+							case true:
+								// Einfügen einer Bilddatei in Spalte
+								imgLink="att.jpg";
+								var imgTag = '<img src="' + imgLink + '"/>';
+								$('td:eq(7)', nRow).html(imgTag);
+								$(nRow).css('color', 'red')
+								break;
+							case false:
+								$(nRow).css("color", "green")
+								$("td:eq(7)", nRow).html("");
 								break;
 						}
 					}
@@ -42,75 +91,246 @@
 				
 				var t_upl = $("#upload_table").DataTable({
 					"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-						switch(aData[7]){
-							case false:
-								// Einf�gen einer Bilddatei in Spalte
-								/**imgLink="jack.jpg";
-								var imgTag = '<img src="' + imgLink + '"/>';
-								$('td:eq(2)', nRow).html(imgTag);*/
-								$(nRow).css('color', 'green')
-								break;
+						switch(aData[6]){
 							case true:
+								$(nRow).css('color', 'green')
+								$("td:eq(6)", nRow).html("");
+								break;
+							case false:
+								// Einfügen einer Bilddatei in Spalte
+								imgLink="att.jpg";
+								var imgTag = '<img src="' + imgLink + '"/>';
+								$("td:eq(6)", nRow).html(imgTag);
 								$(nRow).css('color', 'red')
+								break;
+						}
+						switch(aData[7]){
+							case true:
+								// Einfügen einer Bilddatei in Spalte
+								imgLink="att.jpg";
+								var imgTag = '<img src="' + imgLink + '"/>';
+								$('td:eq(7)', nRow).html(imgTag);
+								$(nRow).css('color', 'red')
+								break;
+							case false:
+								$(nRow).css("color", "green")
+								$("td:eq(7)", nRow).html("");
 								break;
 						}
 					}
 				});
 				
-				$('#addAnno').click( function() {
-					var newDiv = "<div><h3><a href='#'>";
+				var counter=1;
+				
+				$("#addAnno").click( function() {
+					if(t_anno.column(3).visible()==true){
+						t_anno.column(3).visible(false);
+					}
 					var restUri="/AIDV/validate?annotation=";
 					var url=restUri+$("#search_anno").val();
-					
+					var anno_url="", consider="", orig_url="";
 					$.getJSON(url , function(data) {
-						newDiv+=data.label;
-						newDiv+="</a></h3><div><div><h3>Defintion:</h3>";
-						newDiv+=data.definition;
-						newDiv+="</div><div><h3>Resource:</h3>";
-						if(data.resource!=null){
-							$.each(data.resource, function(k,v) {
-								newDiv+="<a class='resource' href='"+v.url+"'>"+v.name+"</a>";
-								if(k<(data.resource.length-1)){
-									newDiv+="<br></br>";
-								}
+						orig_url+="<p><a class='resource' href='"+anno.url+"' target='_blank'>"+anno.url+"</a></p>";
+						$.each(anno.resource, function(k,v) {
+							anno_url+="<p><a class='resource' href='"+v.url+"' target='_blank'>"+v.name+"</a></p>";
+							anno_url+=" ";
+						})
+						if(anno.consider!=null){
+							$.each(anno.consider, function(k,v) {
+								consider+="<br><a class='resource' href='"+v.url+"' target='_blank'>"+v.name+"</a></br>";
 							})
 						} else {
-							newDiv+="Keine Resourcen verf&uumlgbar.";
+							consider="No alternatives available.";
 						}
-						newDiv+="</div><div><h3>Obsolete:</h3>";
-						newDiv+=data.obsolete;
-						newDiv+="</div><div><h3>Exists:</h3>";
-						newDiv+=data.exists;
-						newDiv+="</div><div><h3>Consider:</h3>";
-						if(data.consider!=null){
-							$.each(data.consider, function(k,v) {
-								newDiv+="<a class='resource' href='"+v.url+"'>"+v.name+"</a>";
-								if(k<(data.consider.length-1)){
-									newDiv+="<br></br>";
-								}
-							})
-						} else {
-							newDiv+="Keine Alternativen verf&uumlgbar.";
-						}
-						newDiv+="</div></div></div>";
-						$('div.annotation').append(newDiv)
-						$('div.annotation').accordion("refresh")
-						var delta = ($(this).is('.next') ? 1 : -1);
-						$('#annotation').accordion('option', 'active', (
-							$('#annotation').accordion('option','active') + delta )
-						);
+						t_anno.row.add( [
+							counter,
+							orig_url,
+							anno.label,
+							anno.definition,
+							anno_url,
+							anno.exists,
+							anno.obsolete,
+							consider,
+						] ).draw();
+						t_anno.order([0, 'desc']).draw();
+						counter++;
 					});
 				});
  
 				$("#addBio").click (function () {
-					$("div.biomodell").append("Ihre Suche nach: "+$("#search_bio").val()+" lieferte folgende Ergebnis.");
+					t_bio.clear();
+					$("div.biomodell").html("Your checking for: "+$("#search_bio").val()+" returned the following results.");
+					$("#search_bio").val("");
 					var restUri="/AIDV/validate?biomodel=";
-					var url=restUri+$("#search_bio").val();					
-					var bio="";
+					var url=restUri+$("#search_bio").val();
 					$.getJSON(url , function(model) {
+						$.each(model.functionDefinition, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.unitDefinition, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.compartementType, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.speciesType, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.compartement, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
 						$.each(model.species, function(k,v) {
 							$.each(this.annotations, function(m,n) {
-								bio+=" key: "+m+" value: "+n.url;
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.parameter, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.initialAssignment, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.assignmentRule, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.constraint, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.reaction, function(k,v) {
+							$.each(this.annotations, function(m,n) {
+								t_bio.row.add( [
+									v.id,
+									v.name,
+									n.url,
+									n.label,
+									n.definition,
+									n.resource,
+									n.exists,
+									n.obsolete,
+									n.consider
+								] ).draw();
+							})
+						})
+						$.each(model.event, function(k,v) {
+							$.each(this.annotations, function(m,n) {
 								t_bio.row.add( [
 									v.id,
 									v.name,
@@ -140,7 +360,7 @@
 				    	    complete: function(response)
 				    	    {
 				    	    	var model=$.parseJSON(response.responseText);
-				    	    	$("div.biomodell").append("The validation-request for your biomodel returns the following results");
+				    	    	$("div.biomodell").append("The validation-request for your biomodel returned the following results");
 								$.each(model.species, function(k,v) {
 									$.each(this.annotations, function(m,n) {
 										bio+=" key: "+m+" value: "+n.url;
@@ -165,6 +385,22 @@
 				    	 
 				    	};
 				    	$("#myForm").ajaxForm(options);
+				});
+				
+				$("#annotation button").click(function(e) {
+					e.preventDefault();
+					if($(this).is(".det")){
+						if(t_anno.column(3).visible()==true){
+							t_anno.column(3).visible(false);
+						} else {
+							t_anno.column(3).visible(true);
+						}
+					} else {
+						var delta = ($(this).is('.next') ? 1 : -1);
+						$('#annotation').accordion('option', 'active', (
+							$('#annotation').accordion('option','active') + delta )
+						);
+					}
 				});
 				
 				$("#bioModell button").click(function(e) {
@@ -192,8 +428,8 @@
 				
 				$("#tabs").tabs();
 				
-				$("#end_button, #addBio, #addAnno, #upload_button").button();
-				
+				$("#addBio, #addAnno, #upload_button, #anno_det").button();
+			
 			});
 		</script>
 	</head>
@@ -210,12 +446,30 @@
 					<div>
 						<h3><a href="#">Start</a></h3>
 						<div>
-							Bitte geben eine Annotation zum &Uumlberpr&uumlfen ein.
+							Please insert annotation for checking.
 							<br></br>
 							<div>
 								<input id="search_anno" value="GO:0006915"></input>
-								<button id="addAnno" class="next">Search</button>
+								<button id="addAnno" class="next">Check</button>
 							</div>
+						</div>
+						<h3><a href="#">Result</a></h3>
+						<div>
+							<table id="anno_table" class="display" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Index</th>
+										<th>URL</th>
+										<th>Label</th>
+										<th>Definition</th>
+										<th>Resource</th>
+										<th>Exists</th>
+										<th>Obsolete</th>
+										<th>Consider</th>
+									</tr>
+								</thead>
+							</table>
+							<button id="anno_det" class="det">Details</button>
 						</div>
 					</div>
 				</div>
@@ -224,12 +478,51 @@
 				<div id="bioModell">
 					<h3><a href="#">Start</a></h3>
 					<div>
-						Bitte ein BioModell zum &Uumlberpr&uumlfen eingeben.
+						Please insert biomodel for checking.
 						<br></br>
 						<div>
 							<input id="search_bio" value="BIOMD0000000002"></input>
-							<button id="addBio" class="next">Search</button>
+							<button id="addBio" class="next">Check</button>
 						</div>
+					</div>
+					<h3><a href="#">Result</a></h3>
+					<div>
+						<div class="biomodell"></div>
+						<h1 id="model_id"></h1>
+						<table id="bio_table" class="display" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Name</th>
+									<th>URL</th>
+									<th>Label</th>
+									<th>Definition</th>
+									<th>Resource</th>
+									<th>Exists</th>
+									<th>Obsolete</th>
+									<th>Consider</th>
+								</tr>
+							</thead>							
+						</table>
+					</div>
+				</div>
+			</div>
+			<div id="fragment-3">
+				<div id="upload">
+					<h3><a href="#">Start</a></h3>
+					<div>
+						Please insert biomodel-file for checking.
+						<br></br>
+						<form id="myForm" action="../AIDV/validate" method="post" enctype="multipart/form-data">
+							<input type="file" size="60" name="biomodel" accept="application/xml">
+							<input id="upload_button" type="submit" value="Upload SBML">
+						</form>						 
+						<div id="progress">
+							<div id="bar"></div>
+							<div id="percent">0%</div >
+						</div>
+						<br/>						 
+						<div id="message"></div>
 					</div>
 					<h3><a href="#">Result</a></h3>
 					<div>
@@ -238,7 +531,7 @@
 							<br></br>
 						</div>
 						<h1 id="model_id"></h1>
-						<table id="bio_table" class="display" cellspacing="0" width="100%">
+						<table id="upload_table" class="display" cellspacing="0" width="100%">
 							<thead>
 								<tr>
 									<th>ID</th>
@@ -257,48 +550,6 @@
 						<button id="end_button" class="back">Ende</button>
 					</div>
 				</div>
-			</div>
-			<div id="fragment-3">
-				<div id="upload">
-					<h3><a href="#">Start</a></h3>
-					<div>
-						<form id="myForm" action="../AIDV/validate" method="post" enctype="multipart/form-data">
-							<input type="file" size="60" name="biomodel" accept="application/xml">
-							<input id="upload_button" type="submit" value="Upload SBML">
-						</form>						 
-						<div id="progress">
-							<div id="bar"></div>
-							<div id="percent">0%</div >
-						</div>
-						<br/>						 
-						<div id="message"></div>
-					</div>
-				</div>
-				<h3><a href="#">Result</a></h3>
-				<div>
-					<div class="biomodell">
-						Hallo, willkommen auf der Ergebnisseite. :)
-						<br></br>
-					</div>
-					<h1 id="model_id"></h1>
-					<table id="upload_table" class="display" cellspacing="0" width="100%">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Name</th>
-								<th>URL</th>
-								<th>Label</th>
-								<th>Definition</th>
-								<th>Resource</th>
-								<th>Exists</th>
-								<th>Obsolete</th>
-								<th>Consider</th>
-							</tr>
-						</thead>							
-					</table>
-				    <br></br>
-				    <button id="end_button" class="back">Ende</button>
-			    </div>
 			</div>
 		</div>
 	</body>
