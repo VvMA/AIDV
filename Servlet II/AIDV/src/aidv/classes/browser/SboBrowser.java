@@ -21,8 +21,7 @@ public class SboBrowser extends OntologyBrowser{
 	    // creation of the link to the SBO Web Services
 	    SBOLink link = new SBOLink();	    
 	    // term retrieval (with direct access to its details)
-	    Term term = link.getTerm(annotation.id);
-	    
+	    Term term = link.getTerm(annotation.id);	    
 	    annotation.setLabel(term.getName());
 	    annotation.setDefinition(term.getDefinition());
 	    annotation.setObsolete(term.isObsolete());	    

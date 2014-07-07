@@ -8,6 +8,7 @@
 		<script src="js/jquery-1.10.2.js"></script>
 		<script src="js/jquery-ui-1.10.4.custom.js"></script>
 		<script src="js/jquery.dataTables.js"></script>
+		<script src="http://malsup.github.com/jquery.form.js"></script>
 		
 		<script>
 			$(document).ready(function() {
@@ -127,42 +128,43 @@
 				});
 				
 				$("#upload_button").click (function () {
-					$("#search_upload").val("");
-					$.ajax({
-					   type: "POST",
-					   url: 'foo.bar', 
-					   processData: false,
-					   data: xmlData,
-					   success: function(response){
-						   console.log(response);
-					   },
-					   error: function(response) {
-						   console.log(response);
-					   }
-					 });
-
-
-					/**var url="json/BIOMODEL.json";
 					var bio="";
-					$.getJSON(url , function(model) {
-						$("div.biomodell").append("The validation-request for your biomodel : "+$("#search_upload").val()+" returns the following results");
-						$.each(model.species, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								bio+=" key: "+m+" value: "+n.url;
-								t_upl.row.add( [
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-					});*/
+				    var options = {
+				    	    beforeSend: function()
+				    	    {
+				    	        $("#progress").show();
+				    	        $("#bar").width('0%');
+				    	        $("#message").html("");
+				    	        $("#percent").html("0%");
+				    	    },
+				    	    complete: function(response)
+				    	    {
+				    	    	var model=$.parseJSON(response.responseText);
+				    	    	$("div.biomodell").append("The validation-request for your biomodel returns the following results");
+								$.each(model.species, function(k,v) {
+									$.each(this.annotations, function(m,n) {
+										bio+=" key: "+m+" value: "+n.url;
+										t_upl.row.add( [
+											v.id,
+											v.name,
+											n.url,
+											n.label,
+											n.definition,
+											n.resource,
+											n.exists,
+											n.obsolete,
+											n.consider
+										] ).draw();
+									})
+								})
+				    	    },
+				    	    error: function()
+				    	    {
+				    	        $("#message").html("<font color='red'> ERROR: unable to upload files</font>");				    	 
+				    	    }
+				    	 
+				    	};
+				    	$("#myForm").ajaxForm(options);
 				});
 				
 				$("#bioModell button").click(function(e) {
@@ -249,8 +251,7 @@
 									<th>Obsolete</th>
 									<th>Consider</th>
 								</tr>
-							</thead>
-							
+							</thead>							
 						</table>
 						<br></br>
 						<button id="end_button" class="back">Ende</button>
@@ -261,35 +262,43 @@
 				<div id="upload">
 					<h3><a href="#">Start</a></h3>
 					<div>
-						<br></br>
-						<div>
-						<form action="/validate.html" method="post" enctype="multipart/form-data">
-						<p>Please select a XML-file<br>
-						<input id="search_upload" name="biomodel" type="file" size="50" maxlength="100000" accept="application/xml">
-						<input id="upload_button" type="button" class "next" value="Upload"/>	
-						</form>
-					</div>
-					</div>
-					<h3><a href="#">Result</a></h3>
-					<div>
-						<table id="upload_table" class="display" cellspacing="0" width="100%">
-							<thead>
-								<tr>
-									<th>ID</th>
-									<th>Name</th>
-									<th>URL</th>
-									<th>Label</th>
-									<th>Definition</th>
-									<th>Resource</th>
-									<th>Exists</th>
-									<th>Obsolete</th>
-									<th>Consider</th>
-								</tr>
-							</thead>
-							
-						</table>
+						<form id="myForm" action="../AIDV/validate" method="post" enctype="multipart/form-data">
+							<input type="file" size="60" name="biomodel" accept="application/xml">
+							<input id="upload_button" type="submit" value="Upload SBML">
+						</form>						 
+						<div id="progress">
+							<div id="bar"></div>
+							<div id="percent">0%</div >
+						</div>
+						<br/>						 
+						<div id="message"></div>
 					</div>
 				</div>
+				<h3><a href="#">Result</a></h3>
+				<div>
+					<div class="biomodell">
+						Hallo, willkommen auf der Ergebnisseite. :)
+						<br></br>
+					</div>
+					<h1 id="model_id"></h1>
+					<table id="upload_table" class="display" cellspacing="0" width="100%">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+								<th>URL</th>
+								<th>Label</th>
+								<th>Definition</th>
+								<th>Resource</th>
+								<th>Exists</th>
+								<th>Obsolete</th>
+								<th>Consider</th>
+							</tr>
+						</thead>							
+					</table>
+				    <br></br>
+				    <button id="end_button" class="back">Ende</button>
+			    </div>
 			</div>
 		</div>
 	</body>

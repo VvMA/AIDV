@@ -64,7 +64,6 @@ public class Validator {
 	public static String getBiomodel(File biomodel) {
 		String json=null;
 		try {
-			biomodel = new File("test1.xml");
 			ParserJ p1 = new ParserJ(biomodel);
 			Biomodel b1 = p1.getBiomodel();
 			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	
