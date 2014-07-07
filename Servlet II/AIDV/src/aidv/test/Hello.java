@@ -33,19 +33,17 @@ public class Hello extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String uri = request.getParameter("uri");
-		if(uri!=null) {
+		String annotationURL = request.getParameter("annotaion");
+		if(annotationURL!=null) {
 			PrintWriter out = response.getWriter();
 		    response.setContentType("text/plain");
-			out.println(Validator.getAnnotation(uri));
+			out.println(Validator.getAnnotation(annotationURL));
 		}
-		String biomodel = request.getParameter("biomodel");
-		if(biomodel!=null) {
+		String biomodeURL = request.getParameter("biomodel");
+		if(biomodeURL!=null) {
 			PrintWriter out = response.getWriter();
 		    response.setContentType("text/plain");
-			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();				
-			String json = ow.writeValueAsString(Validator.getBiomodel(null));
-			out.println(json);
+			out.println(Validator.getBiomodel(biomodeURL));
 		}
 		
 	}

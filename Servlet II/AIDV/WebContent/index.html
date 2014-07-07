@@ -58,9 +58,9 @@
 				
 				$('#addAnno').click( function() {
 					var newDiv = "<div><h3><a href='#'>";
-					 var restUri="/AIDV/Hello?uri=";
-					restUri=restUri+$("#search_anno").val();
-					var url=restUri;
+					var restUri="/AIDV/Hello?annotation=";
+					var url=restUri+$("#search_anno").val();
+					
 					$.getJSON(url , function(data) {
 						newDiv+=data.label;
 						newDiv+="</a></h3><div><div><h3>Defintion:</h3>";
@@ -103,8 +103,8 @@
  
 				$("#addBio").click (function () {
 					$("div.biomodell").append("Ihre Suche nach: "+$("#search_bio").val()+" lieferte folgende Ergebnis.");
-					$("#search_bio").val("");
-					var url="json/BIOMODEL.json";
+					var restUri="/AIDV/Hello?biomodel=";
+					var url=restUri+$("#search_bio").val();					
 					var bio="";
 					$.getJSON(url , function(model) {
 						$.each(model.species, function(k,v) {

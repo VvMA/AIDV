@@ -29,38 +29,39 @@ public class Identifiers_org extends OntologyBrowser{
 		return url;
 	}
 	
-	public static String connect(String urlToGet) {
+	public static String connect(String urlToGet) throws IOException {
 	 	URL url;
         HttpURLConnection conn;
         BufferedReader rd;
         String line;
         String result = null;
-        try {
-            url = new URL(urlToGet);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            InputStream in=conn.getInputStream();
-            rd = new BufferedReader(
-                    new InputStreamReader(in));
-            while ((line = rd.readLine()) != null) {
-            	if(result==null)
-            		result=new String();
-                result += line;
-            }
-            rd.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        url = new URL(urlToGet);
+        conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        InputStream in=conn.getInputStream();
+        rd = new BufferedReader(
+                new InputStreamReader(in));
+        while ((line = rd.readLine()) != null) {
+        	if(result==null)
+        		result=new String();
+            result += line;
         }
+        rd.close();
         return result;
 	}
 	
-	public  Annotation get(Annotation a) throws IOException {
+	public  Annotation get(Annotation a){
 		String result=null;
 		String url =a.getUrl();
 		if(url.matches("http://identifiers.org/.+")) {
 			url=url.replace("http://identifiers.org/", "http://info.identifiers.org/").concat(".html");
 			System.out.println(url);
+			try {
 			result=connect(url);
+			}
+			catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
 		else if(url.matches("urn:miriam:.+")) {
 			a.setUrl(transformUrn(a.getUrl()));
@@ -70,6 +71,7 @@ public class Identifiers_org extends OntologyBrowser{
 			Document doc = Jsoup.parse(result);
 			Elements resources=	doc.getElementsByClass("resource");		
 			Annotation a1=new Annotation();
+			a1.id=doc.select("div.info:nth-child(1) > span:nth-child(1)").first().text();
 			a1.setUrl(a.getUrl());
 			a1.setExists(true);
 			ArrayList<Link>links=new ArrayList<Link>();
@@ -86,8 +88,8 @@ public class Identifiers_org extends OntologyBrowser{
 	}
 	
 	 public static void main(String[] args) throws Exception{
-		 Annotation a =new Annotation("http://identifiers.org/go/GO:0006915");
-		 a=new Annotation("urn:miriam:go:GO%3A0007274");
+		 Annotation a =new Annotation("http://identifiers.org/go/IPR00239");
+//		 a=new Annotation("urn:miriam:go:GO%3A0007274");
 		 OntologyBrowser identifiers=new Identifiers_org();
 		 a= identifiers.get(a);
 		 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	
