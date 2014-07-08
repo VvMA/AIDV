@@ -1,6 +1,5 @@
 package aidv.classes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Annotation {
@@ -9,8 +8,8 @@ public class Annotation {
 	String url;
 	String label;
 	String definition;
-	boolean exists;
-	boolean obsolete;	
+	Boolean exists;
+	Boolean obsolete;	
 	List<Link> resource;
 	List<Link> consider;
 	
@@ -38,16 +37,16 @@ public class Annotation {
 	public void setDefinition(String definition) {
 		this.definition = definition;
 	}
-	public boolean isExists() {
+	public Boolean isExists() {
 		return exists;
 	}
-	public void setExists(boolean exists) {
+	public void setExists(Boolean exists) {
 		this.exists = exists;
 	}
-	public boolean isObsolete() {
+	public Boolean isObsolete() {
 		return obsolete;
 	}
-	public void setObsolete(boolean obsolete) {
+	public void setObsolete(Boolean obsolete) {
 		this.obsolete = obsolete;
 	}
 	public List<Link> getResource() {

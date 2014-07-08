@@ -88,8 +88,7 @@ public class Identifiers_org extends OntologyBrowser{
 	}
 	
 	 public static void main(String[] args) throws Exception{
-		 Annotation a =new Annotation("http://identifiers.org/go/IPR00239");
-//		 a=new Annotation("urn:miriam:go:GO%3A0007274");
+		 Annotation a =new Annotation("http://identifiers.org/interpro/IPR002394");
 		 OntologyBrowser identifiers=new Identifiers_org();
 		 a= identifiers.get(a);
 		 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	

@@ -24,6 +24,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import aidv.classes.Annotation;
 import aidv.classes.Biomodel;
 import aidv.classes.BrowserFactory;
@@ -170,22 +174,21 @@ public class ParserJ {
 				int index=annotations.indexOf(annotation);
 				OntologyBrowser identifiers=new Identifiers_org();
 				try {
-				annotation=identifiers.get(annotation);
+					annotation=identifiers.get(annotation);
 				}catch(Exception e) {
 					e.printStackTrace();
-				}
-				
+				}				
 				if(annotation!=null) {
 					Ontology ontology=OntologyFactory.getOntology(annotation);
 					OntologyBrowser oBrowser=BrowserFactory.getBrowser(ontology);					
 					if(oBrowser!=null) {		
 						try {
-							annotations.set(index,oBrowser.get(annotation));
+							annotation=oBrowser.get(annotation);							
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
+					annotations.set(index,annotation);
 				}
 			}
 		}
