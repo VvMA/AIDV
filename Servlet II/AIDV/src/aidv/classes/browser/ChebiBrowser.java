@@ -6,7 +6,7 @@ import java.util.List;
 import aidv.classes.Annotation;
 import uk.ac.ebi.chebi.webapps.chebiWS.client.ChebiWebServiceClient;
 import uk.ac.ebi.chebi.webapps.chebiWS.model.*;
-public class ChebiBrowser extends OntologyBrowser {
+public class ChEBIBrowser extends OntologyBrowser {
 
 	@Override
 	public Annotation get(Annotation annotation) throws IOException {
