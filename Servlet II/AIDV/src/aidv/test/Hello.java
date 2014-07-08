@@ -46,11 +46,11 @@ public class Hello extends HttpServlet {
 		    response.setContentType("text/plain");
 			out.println(Validator.getAnnotation(annotationURL));
 		}
-		String biomodeURL = request.getParameter("biomodel");
-		if(biomodeURL!=null) {
+		String biomodelURL = request.getParameter("biomodel");
+		if(biomodelURL!=null) {
 			PrintWriter out = response.getWriter();
 		    response.setContentType("text/plain");
-			out.println(Validator.getBiomodel(biomodeURL));
+			out.println(Validator.getBiomodel(biomodelURL));
 		}
 	}
 

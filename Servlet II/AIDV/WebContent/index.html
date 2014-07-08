@@ -161,209 +161,52 @@
 						counter++;
 					});
 				});
- 
+				function insertDataInTable(table,typeName,modelelement) {
+						if(modelelement)
+							$.each(modelelement, function(k,v) {							
+							if(this.annotations)
+								$.each(this.annotations, function(m,n) {
+										table.row.add( [
+											typeName,
+											v.id,
+											v.name,
+											n.url,
+											n.label,
+											n.definition,
+											n.resource,
+											n.exists,
+											n.obsolete,
+											n.consider
+										] ).draw();
+									});
+							});
+					};
+				
+
 				$("#addBio").click (function () {
+					
 					if(t_bio.column(5).visible()==true){
 						t_bio.column(5).visible(false);
 					}
 					t_bio.clear();
 					$("div.biomodell").html("Your checking for: "+$("#search_bio").val()+" returned the following results.");
-					$("#search_bio").val("");
 					var restUri="/AIDV/validate?biomodel=";
 					var url=restUri+$("#search_bio").val();
+					console.log(url);
 					$.getJSON(url , function(model) {
-						$.each(model.functionDefinition, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"functionDefinition",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.unitDefinition, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"unitDefinition",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.compartementType, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"compatementType",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.speciesType, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"speciesType",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.compartement, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"compartement",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.species, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"species",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.parameter, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"parameter",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.initialAssignment, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"initialAssignment",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.assignmentRule, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"assignmentRule",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.constraint, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"constraint",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.reaction, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"reaction",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
-						$.each(model.event, function(k,v) {
-							$.each(this.annotations, function(m,n) {
-								t_bio.row.add( [
-									"event",
-									v.id,
-									v.name,
-									n.url,
-									n.label,
-									n.definition,
-									n.resource,
-									n.exists,
-									n.obsolete,
-									n.consider
-								] ).draw();
-							})
-						})
+					
+					insertDataInTable(t_bio,"functionDefinition",model.functionDefinition);
+					insertDataInTable(t_bio,"unitDefinition",model.unitDefinition);
+					insertDataInTable(t_bio,"compatementType",model.compartementType);
+					insertDataInTable(t_bio,"speciesType",model.speciesType);
+					insertDataInTable(t_bio,"compartement",model.compartement);
+					insertDataInTable(t_bio,"species",model.species);
+					insertDataInTable(t_bio,"parameter",model.parameter);
+					insertDataInTable(t_bio,"initialAssignment",model.initialAssignment);
+					insertDataInTable(t_bio,"assignmentRule",model.assignmentRule);
+					insertDataInTable(t_bio,"constraint",model.constraint);						
+					insertDataInTable(t_bio,"reaction",model.reaction);						
+					insertDataInTable(t_bio,"event",model.event);
 						t_bio.order([8, 'desc']).draw();
 					});
 				});
@@ -385,198 +228,18 @@
 				    	    {
 				    	    	var model=$.parseJSON(response.responseText);
 				    	    	$("div.uplmodell").html("The validation-request for your biomodel returned the following results");
-								$.each(model.functionDefinition, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"functionDefinition",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.unitDefinition, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"unitDefinition",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.compartementType, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"compatementType",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.speciesType, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"speciesType",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.compartement, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"compartement",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.species, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"species",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.parameter, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"parameter",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.initialAssignment, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"initialAssignment",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.assignmentRule, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"assignmentRule",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.constraint, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"constraint",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.reaction, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"reaction",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
-								$.each(model.event, function(k,v) {
-									$.each(this.annotations, function(m,n) {
-										t_bio.row.add( [
-											"event",
-											v.id,
-											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
-										] ).draw();
-									})
-								})
+								insertDataInTable(t_upl,"functionDefinition",model.functionDefinition);
+								insertDataInTable(t_upl,"unitDefinition",model.unitDefinition);
+								insertDataInTable(t_upl,"compatementType",model.compartementType);
+								insertDataInTable(t_upl,"speciesType",model.speciesType);
+								insertDataInTable(t_upl,"compartement",model.compartement);
+								insertDataInTable(t_upl,"species",model.species);
+								insertDataInTable(t_upl,"parameter",model.parameter);
+								insertDataInTable(t_upl,"initialAssignment",model.initialAssignment);
+								insertDataInTable(t_upl,"assignmentRule",model.assignmentRule);
+								insertDataInTable(t_upl,"constraint",model.constraint);						
+								insertDataInTable(t_upl,"reaction",model.reaction);						
+								insertDataInTable(t_upl,"event",model.event);
 								t_upl.order([8, 'desc']).draw();
 				    	    },
 				    	    error: function()
