@@ -12,7 +12,9 @@
 		
 		<script>
 			$(document).ready(function() {
-			
+			$("#upload_table").hide();
+			 $("#anno_table").hide();
+			 $("#bio_table").hide();
 				$("#annotation").accordion({					//jQuery Accordion
 					//event:false,								//deaktivieren des Wechselns von Accordionen über Maus
 					header: "> div > h3",						//Umwandeln von div h3-Strukturen in Accordions
@@ -161,6 +163,7 @@
 							consider,
 						] ).draw();
 						t_anno.order([0, 'desc']).draw();
+						 $("#anno_table").show();
 						counter++;
 					});
 				});
@@ -212,7 +215,7 @@
 						t_bio.column(5).visible(false);
 					}
 					t_bio.clear();
-					$("div.biomodell").html("Your checking for: "+$("#search_bio").val()+" returned the following results.");
+					
 					var restUri="/AIDV/validate?biomodel=";
 					var url=restUri+$("#search_bio").val();
 					console.log(url);
@@ -230,6 +233,8 @@
 						insertDataInTable(t_bio,"reaction",model.reaction);						
 						insertDataInTable(t_bio,"event",model.event);
 						t_bio.order([8, 'desc']).draw();
+						 $("#bio_table").show();
+						 $("div.biomodell").html("Your checking for: "+$("#search_bio").val()+" returned the following results.");
 					});
 				});
 				
@@ -256,6 +261,8 @@
 								insertDataInTable(t_upl,"reaction",model.reaction);						
 								insertDataInTable(t_upl,"event",model.event);
 								t_upl.order([8, 'desc']).draw();
+
+								$("#upload_table").show();
 				    	    },
 				    	    error: function()
 				    	    {
