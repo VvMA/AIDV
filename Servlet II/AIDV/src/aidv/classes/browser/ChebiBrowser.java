@@ -14,7 +14,6 @@ public class ChebiBrowser extends OntologyBrowser {
 
 		      // Create client
 		      ChebiWebServiceClient client = new ChebiWebServiceClient();
-		      System.out.println("Invoking getCompleteEntity");
 		      Entity entity = client.getCompleteEntity("CHEBI:15377");
 		      System.out.println("GetName: " + entity.getChebiAsciiName());
 		      List<DataItem> synonyms = entity.getSynonyms();

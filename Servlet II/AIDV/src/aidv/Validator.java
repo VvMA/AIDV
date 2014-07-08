@@ -1,17 +1,14 @@
 package aidv;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 
 import aidv.classes.Annotation;
 import aidv.classes.Biomodel;
 import aidv.classes.BrowserFactory;
 import aidv.classes.Ontology;
 import aidv.classes.OntologyFactory;
-import aidv.tools.ParserJ;
+import aidv.classes.parser.ParserJ;
 import aidv.classes.browser.Identifiers_org;
 import aidv.classes.browser.OntologyBrowser;
 
@@ -19,6 +16,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class Validator {
+	/**
+	 * @param uri
+	 * @return
+	 */
 	public static String getAnnotation(String uri) {
 		String json=null;
 		Annotation annotation=new Annotation(uri);
@@ -28,8 +29,7 @@ public class Validator {
 			annotation=identifiers.get(annotation);
 			}catch(Exception e) {
 				e.printStackTrace();
-			}
-			
+			}			
 			if(annotation!=null) {
 				Ontology ontology=OntologyFactory.getOntology(annotation);
 				OntologyBrowser oBrowser=BrowserFactory.getBrowser(ontology);					
@@ -37,7 +37,6 @@ public class Validator {
 					try {
 						annotation=oBrowser.get(annotation);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -49,6 +48,10 @@ public class Validator {
 		}
 		return json;
 	}
+	/**
+	 * @param url
+	 * @return
+	 */
 	public static String getBiomodel(String url) {
 		String json=null;
 		try {
@@ -61,10 +64,14 @@ public class Validator {
 		}
 		return json;
 	}
-	public static String getBiomodel(File biomodel) {
+	/**
+	 * @param file
+	 * @return
+	 */
+	public static String getBiomodel(File file) {
 		String json=null;
 		try {
-			ParserJ p1 = new ParserJ(biomodel);
+			ParserJ p1 = new ParserJ(file);
 			Biomodel b1 = p1.getBiomodel();
 			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	
 			json = ow.writeValueAsString(b1);
