@@ -12,15 +12,16 @@
 		
 		<script>
 			$(document).ready(function() {
-			$("#upload_table").hide();
-			 $("#anno_table").hide();
-			 $("#bio_table").hide();
-				$("#annotation").accordion({					//jQuery Accordion
+				$("#upload_table").hide();						//Verstecken der Tabellen zwecks benutzerfreundlicherer Darstellung
+				$("#anno_table").hide();
+				$("#bio_table").hide();
+			 
+				$("#annotation").accordion({					//jQueryUI Accordion Annotation
 					//event:false,								//deaktivieren des Wechselns von Accordionen über Maus
 					header: "> div > h3",						//Umwandeln von div h3-Strukturen in Accordions
 					heightStyle: "content"						//Strecken des Accordions passend zu Inhalt
 				});
-				$("#bioModell, #upload").accordion({
+				$("#bioModell, #upload").accordion({			//jQueryUI Accordione BioModell und Upload
 					//event:false,								//deaktivieren des Wechselns von Accordionen per Maus
 					heightStyle: "content"						//Strecken des Accordion passend zum Inhalt
 				});
@@ -126,7 +127,7 @@
 					}
 				});
 				
-				var counter=1;				//Zähler für Index der Annotationen zum Ordnen
+				var index=1;				//Zähler für Index der Annotationen zum Ordnen
 				
 				$("#addAnno").click( function() {					//Funktion hinter "Check"-Button bie Annotation
 					if(t_anno.column(3).visible()==true){			//Test auf sichtbarkeit der Spalte Definition
@@ -134,74 +135,87 @@
 					}
 					var restUri="/AIDV/validate?annotation=";		//REST-URI
 					var url=restUri+$("#search_anno").val();		//URL für Server mit Eingabe
-					var anno_url="", consider="", orig_url="";		//URLs für Resourcen, Alternativen und Direkt
+					var resource="", consider="", orig_url="";		//URLs für Resourcen, Alternativen und Direkt
 					$("#search_anno").val("");						//Setzen des Eingabefeldes in Annotation auf leer
-					$.getJSON(url , function(anno) {				//Empfang der JSON
+					$.getJSON(url , function(anno) {				//Funktion zum Empfang der JSON
 						orig_url+="<p><a class='resource' href='"+anno.url+"' target='_blank'>"+anno.url+"</a></p>";	//Umwandeln der DirektURL in eine klickbare Version
 						if(anno.resource) {
-							$.each(anno.resource, function(k,v) {		//Umwandeln der RessourcenURL in klickbare Version(-en)
-								anno_url+="<p><a class='resource' href='"+v.url+"' target='_blank'><font size='-2'>"+v.name+"</font></a></p>";
+							$.each(anno.resource, function(k,v) {		//Umwandeln der RessourcenURL in klickbare Version(-en), öffnen in neuem Tab
+								resource+="<a class='resource' href='"+v.url+"' target='_blank'><font size='-1'>"+v.name+"</font></a>";
+								if(k<(anno.resource.length-1)) {
+									resource+="<br>";					//Zeilenumbruch für bessere Lesbarkeit
+								}
 							})
 						} else {
 							resource="No resources available.";
 						}
-						if(anno.consider){							//Umwandeln der AlternativenURL in klickbare Version(-en)
+						if(anno.consider){							//Umwandeln der AlternativenURL in kleinere klickbare Version(-en), öffnen in neuem Tab
 							$.each(anno.consider, function(k,v) {
-								consider+="<p><a class='resource' href='"+v.url+"' target='_blank'><font size='-2'>"+v.name+"</font></a></p>";
+								consider+="<a class='resource' href='"+v.url+"' target='_blank'><font size='-1'>"+v.name+"</font></a>";
+								if(k<(anno.consider.length-1)) {
+									consider+="<br>";					//Zeilenumbruch für bessere Lesbarkeit
+								}
 							})
 						} else {
 							consider="No alternatives available.";		//Fallback falls keine Alternativen verfügbar.
 						}
-						t_anno.row.add( [
-							counter,
-							orig_url,
-							anno.label,
-							anno.definition,
-							anno_url,
-							anno.exists,
-							anno.obsolete,
-							consider,
-						] ).draw();
-						t_anno.order([0, 'desc']).draw();
-						 $("#anno_table").show();
-						counter++;
+						t_anno.row.add( [							//Hinzufuegen der Zeile zur Annotationstabelle t_anno
+							index,									//Index Der Annotation
+							orig_url,								//URL der Annotation
+							anno.label,								//Label
+							anno.definition,						//Definition
+							resource,								//QuellURLs
+							anno.exists,							//Existienz der Annotation
+							anno.obsolete,							//Obsoleszens der Annotation
+							consider,								//Alternativen falls Obsolet
+						] ).draw();									//Einzeichnen in Tabelle
+						t_anno.order([0, 'desc']).draw();			//Ordnen von t_anno nach dem index, absteigend
+						 $("#anno_table").show();					//Wiederanzeigen von t_anno
+						index++;									//Erhöhen des Index um 1
 					});
 				});
 				
-				function insertDataInTable(table,typeName,modelelement) {
-					if(modelelement) {
-						$.each(modelelement, function(k,v) {							
-							if(this.annotations) {
-								$.each(this.annotations, function(m,annotation) {
-									if(annotation){
-										var resource="", consider="", url="";
-										url="<p><a class='resource' href='"+this.url+"' target='_blank'>"+this.url+"</a></p>";
-										if(this.resource) {
-											$.each(this.resource, function(key,value) {
-												resource+="<p><a class='resource' href='"+value.url+"' target='_blank'><font size='-2'>"+value.name+"</font></a></p>";
+				//Funktion zum Einfügen von Daten als Zeilen in die entsprechende Tabelle
+				function insertDataInTable(table,typeName,modelelement) {			//table=Tabellenname, typeName=Name des Elements aus Modell, modelelement=Element des Modells
+					if(modelelement) {									//Test ob Element des Modells vorhanden
+						$.each(modelelement, function(k,v) {			//Iteration durch modelelement
+							if(this.annotations) {						//Test auf vorhandene Annotationen
+								$.each(this.annotations, function(m,annotation) {		//Iteration durch Annotationen
+									if(annotation){										//Test auf Inhalt von Annotation
+										var resource="", consider="", url="";			//Ressource(-n), Alternative(-n) und Link der Annotation
+										url="<p><a class='resource' href='"+this.url+"' target='_blank'>"+this.url+"</a></p>";		//Setzen der AnnotationsURL
+										if(this.resource) {									//Test auf vorhandene Ressourcen
+											$.each(this.resource, function(key,value) {		//Iteration durch Ressourcen und Umwandeln in kleinere klickbare Links, öffnen in neuem Tab
+												resource+="<a class='resource' href='"+value.url+"' target='_blank'><font size='-1'>"+value.name+"</font></a>";
+												if(key<(this.resource.length-1)) {
+													resource+="<br>";						//Zeilenumbruch für bessere Lesbarkeit
+												}
 											});
 										} else {
-											resource="No resources available.";
+											resource="No resources available.";				//Fallback falls keine Ressourcen verfügbar
 										}
-										if(this.consider) {
-											$.each(this.consider, function(key,value) {
-												consider+="<p><a class='consider' href='"+value.url+"' target='_blank'><font size='-2'>"+value.name+"</font></a></p>";
+										if(this.consider) {									//Test auf vorhandene Alternativen
+											$.each(this.consider, function(key,value) {		//Iteration durch Alternativen und Umwandeln in kleinere klickbare Links, öffnen in neuem Tab
+												consider+="<a class='consider' href='"+value.url+"' target='_blank'><font size='-1'>"+value.name+"</font></a>";
+												if(key<(this.consider.length-1)) {
+													consider+="<br>";						//Zeilenumbruch für bessere Lesbarkeit
+												}
 											});
 										} else {
-											consider="No alternatives available.";
+											consider="No alternatives available.";			//Fallback falls keine Alternativen verfügbar
 										}
-										table.row.add( [
-											typeName,
-											v.id,
-											v.name,
-											url,
-											annotation.label,
-											annotation.definition,
-											resource,
-											annotation.exists,
-											annotation.obsolete,
-											consider
-										] ).draw();
+										table.row.add( [						//Hinzufuegen der Zeile zur zugehörigen Tabelle table
+											typeName,							//Name des Elements aus Modell
+											v.id,								//ID der Annotation
+											v.name,								//Name der Annotation
+											url,								//URL der Annotation
+											annotation.label,					//Label
+											annotation.definition,				//Definition
+											resource,							//QuellURLs
+											annotation.exists,					//Existienz der Annotation
+											annotation.obsolete,				//Obsoleszens der Annotation
+											consider							////Alternativen falls Obsolet
+										] ).draw();								////Einzeichnen in Tabelle
 									}
 								});
 							}
@@ -209,18 +223,17 @@
 					}
 				};
 
-				$("#addBio").click (function () {
-					
-					if(t_bio.column(5).visible()==true){
-						t_bio.column(5).visible(false);
+				$("#addBio").click (function () {					//Funktion die im Tab BioModell ausgelöst wird
+					if(t_bio.column(5).visible()==true){			//Wenn Spalte Defintion(5) sichtbar,
+						t_bio.column(5).visible(false);				//dann wieder verstecken
 					}
-					t_bio.clear();
-					
-					var restUri="/AIDV/validate?biomodel=";
-					var url=restUri+$("#search_bio").val();
+					t_bio.clear();									//Löschen des Inhalts der BioModelltabelle t_bio
+					var restUri="/AIDV/validate?biomodel=";			//REST-URI
+					var url=restUri+$("#search_bio").val();			//URL für Server mit Eingabe
 					console.log(url);
-					$.getJSON(url , function(model) {					
-						insertDataInTable(t_bio,"functionDefinition",model.functionDefinition);
+					$("div.biomodell").html("Please wait while your request is processed.").css("color","green");	//Einfügen einer Wartenachricht solange die Tabeller erstellt wird, in grüner Schrift
+					$.getJSON(url , function(model) {				//Funktion zum Empfang der JSON
+						insertDataInTable(t_bio,"functionDefinition",model.functionDefinition);			//Einfügen der verschiedenen Elemente des Modells in die Tabelle t_bio
 						insertDataInTable(t_bio,"unitDefinition",model.unitDefinition);
 						insertDataInTable(t_bio,"compatementType",model.compartementType);
 						insertDataInTable(t_bio,"speciesType",model.speciesType);
@@ -232,23 +245,24 @@
 						insertDataInTable(t_bio,"constraint",model.constraint);						
 						insertDataInTable(t_bio,"reaction",model.reaction);						
 						insertDataInTable(t_bio,"event",model.event);
-						t_bio.order([8, 'desc']).draw();
-						 $("#bio_table").show();
-						 $("div.biomodell").html("Your checking for: "+$("#search_bio").val()+" returned the following results.");
+						t_bio.order([8, 'desc']).draw();						//Ordnen nach Spalte Obsolete (8), absteigend
+						$("#bio_table").show();									//Wiederanzeigen der Tabelle t_bio
+						$("div.biomodell").html("Your checking for: "+$("#search_bio").val()+" returned the following results.").css("color","black");
+						$("#model_id_bio").html(model.id+": "+model.name);			//Ersetzen der Wartenachricht durch Rückmeldung und Modell-Name und ID
 					});
 				});
 				
-				$("#upload_button").click (function () {
-					if(t_upl.column(5).visible()==true){
-						t_upl.column(5).visible(false);
+				$("#upload_button").click (function () {			//Funktion die im Tab Modell-Upload ausgelöst wird
+					if(t_upl.column(5).visible()==true){			//Wenn Spalte Defintion(5) sichtbar,
+						t_upl.column(5).visible(false);				//dann wieder verstecken
 					}
-					t_upl.clear();
+					t_upl.clear();									//Löschen des Inhalts der BioModelltabelle t_upl
 				    var options = {
-				    	    complete: function(response)
+				    	    complete: function(response)			//Wenn Upload erfolgreich
 				    	    {
+								$("div.uplmodell").html("Please wait while your request is processed.").css("color","green");		//Einfügen einer Wartenachricht solange die Tabeller erstellt wird, in grüner Schrift
 				    	    	var model=$.parseJSON(response.responseText);
-				    	    	$("div.uplmodell").html("The validation-request for your biomodel returned the following results");
-								insertDataInTable(t_upl,"functionDefinition",model.functionDefinition);
+								insertDataInTable(t_upl,"functionDefinition",model.functionDefinition);		//Einfügen der verschiedenen Elemente des Modells in die Tabelle t_upl
 								insertDataInTable(t_upl,"unitDefinition",model.unitDefinition);
 								insertDataInTable(t_upl,"compatementType",model.compartementType);
 								insertDataInTable(t_upl,"speciesType",model.speciesType);
@@ -260,38 +274,39 @@
 								insertDataInTable(t_upl,"constraint",model.constraint);						
 								insertDataInTable(t_upl,"reaction",model.reaction);						
 								insertDataInTable(t_upl,"event",model.event);
-								t_upl.order([8, 'desc']).draw();
-
-								$("#upload_table").show();
+								t_upl.order([8, 'desc']).draw();				//Ordnen nach Spalte Obsolete (8), absteigend
+								$("#upload_table").show();						//Wiederanzeigen der Tabelle t_upl
+								$("div.uplmodell").html("The validation-request for your biomodel returned the following results").css("color","black");		//Ersetzen der Wartenachricht durch Rückmeldung
+								//$("#model_id_upl").html(model.id+": "+model.name);			//Ersetzen der Wartenachricht durch Rückmeldung und Modell-Name und ID
 				    	    },
-				    	    error: function()
+				    	    error: function()						//Wenn Upload NICHT erfolgreich
 				    	    {
-				    	        $("#message").html("<font color='red'> ERROR: unable to upload files</font>");				    	 
+				    	        $("#message").html("<font color='red'> ERROR: unable to upload files</font>");			//Fehlermeldung  	 
 				    	    }
 				    	 
 				    	};
 				    	$("#myForm").ajaxForm(options);
-						$('#upload').accordion('option', 'active', (
-							$('#upload').accordion('option','active') + 1 )
-						);
+						$('#upload').accordion('option', 'active', ($('#upload').accordion('option','active') + 1 )); 		//Setzen des Result-Tabs als aktives Accordion im Upload-Tab
 				});
 				
+				//Funktion zum Öffnen des Annotation-Result-Accordions
 				$("#annotation button").click(function(e) {
 					e.preventDefault();
-					if($(this).is(".det")){
-						if(t_anno.column(3).visible()==true){
-							t_anno.column(3).visible(false);
+					if($(this).is(".det")){							//Wird durch klick auf "Details" ausgelöst
+						if(t_anno.column(3).visible()==true){		//Wenn Definition sichtbar,
+							t_anno.column(3).visible(false);		//verstecken,
 						} else {
-							t_anno.column(3).visible(true);
+							t_anno.column(3).visible(true);			//sonst sichtbar lassen
 						}
-					} else {
-						var delta = ($(this).is('.next') ? 1 : -1);
+					} else {											//Wird durch Klick auf "Check" ausgelöst
+						var delta = ($(this).is('.next') ? 1 : -1);		//Bestimmt die Richtung der Aktivierung des naechsten Accordions
 						$('#annotation').accordion('option', 'active', (
 							$('#annotation').accordion('option','active') + delta )
-						);
+						);												//Aktivieren des Accordions in Richtung delta
 					}
 				});
 				
+				//Funktion zum Öffnen des BioModell-Result-Accordions, siehe Anno-Result-Accordion
 				$("#bioModell button").click(function(e) {
 					e.preventDefault();
 					if($(this).is(".det")){
@@ -305,16 +320,10 @@
 						$('#bioModell').accordion('option', 'active', (
 							$('#bioModell').accordion('option','active') + delta )
 						);
-						
-						if(delta==1){
-							var url="json/BIOMODEL.json";
-							$.getJSON(url , function(data) {
-								$("#model_id").html(data.id+": "+data.name);
-							});
-						}
 					}
 				});
 				
+				//Funktion zum Überprüfen der Sichtbarkeit der Spalte Definition (5)
 				$("#upload button").click(function(e) {
 					e.preventDefault();
 					if($(this).is(".det")){
@@ -323,47 +332,41 @@
 						} else {
 							t_upl.column(5).visible(true);
 						}
-					}/** else {
-						
-						var delta = ($(this).is('.next') ? 1 : -1);
-						$('#upload').accordion('option', 'active', (
-							$('#upload').accordion('option','active') + delta )
-						);
-					}*/
+					}
 				});
 				
-				$("#tabs").tabs();
+				$("#tabs").tabs();		//Rendern der Tabs durch jQueryUI
 				
-				$("#addBio, #addAnno, #upload_button, #anno_det, #bio_det, #upl_det").button();
+				$("#addBio, #addAnno, #upload_button, #anno_det, #bio_det, #upl_det").button();		//Rendern der Buttons durch jQueryUI
 			
 			});
 		</script>
 	</head>
 	<body>
-		<h1>AIDV</h1>
-		<div id="tabs">
-			<ul>
+		<h1>AIDV</h1>			<!--Überschrift des Programms-->
+		<div id="tabs">			<!--Sektion Tabs-->
+			<ul>				<!--ungeordnete Liste der Tabs mit Links und Namen-->
 				<li><a href="#fragment-1">Annotation</a></li>
 				<li><a href="#fragment-2">BioModell</a></li>
 				<li><a href="#fragment-3">Modell-Upload</a></li>
 			</ul>
-			<div id="fragment-1">
-				<div id="annotation" class="annotation">
+			<div id="fragment-1">				<!--Erstes Tab Annotation-->
+				<div id="annotation">			<!--OberAccordion Annotation-->
 					<div>
-						<h3><a href="#">Start</a></h3>
+						<h3><a href="#">Start</a></h3>		<!--erstes Accordion Start-->
 						<div>
 							Please insert annotation for checking.
 							<br></br>
 							<div>
-								<input id="search_anno" value="http://identifiers.org/go/GO:0006915"></input>
-								<button id="addAnno" class="next">Check</button>
+								<input id="search_anno" value="http://identifiers.org/go/GO:0006915"></input>		<!--Input für Nutzereingabe-->
+								<button id="addAnno" class="next">Check</button>									<!--Button zum Anstossen des Validierungsprozesses der Annotation-->
 							</div>
 						</div>
-						<h3><a href="#">Result</a></h3>
+						<h3><a href="#">Result</a></h3>		<!--zweites Accordion Result-->
 						<div>
-							<table id="anno_table" class="display" cellspacing="0" width="100%">
-								<thead>
-									<tr>
+							<table id="anno_table" class="display" cellspacing="0" width="100%">		<!--Annotationstabelle-->
+								<thead>								<!--Tabellenkopf-->
+									<tr>							<!--nachfolgend Tabellenspalten-->
 										<th>Index</th>
 										<th>URL</th>
 										<th>Label</th>
@@ -375,29 +378,29 @@
 									</tr>
 								</thead>
 							</table>
-							<button id="anno_det" class="det">Details</button>
+							<button id="anno_det" class="det">Details</button>		<!--Button zum Anzeigen der Definition(-en) als Detail-->
 						</div>
 					</div>
 				</div>
 			</div>
-			<div id="fragment-2">
-				<div id="bioModell">
-					<h3><a href="#">Start</a></h3>
+			<div id="fragment-2">				<!--Zweites Tab BioModell-->
+				<div id="bioModell">			<!--OberAccordion BioModell-->
+					<h3><a href="#">Start</a></h3>		<!--erste Accordion Start-->
 					<div>
 						Please insert a URL of a biomodel for checking.
 						<br></br>
 						<div>
-							<input id="search_bio" value=""></input>
-							<button id="addBio" class="next">Check</button>
+							<input id="search_bio" value=""></input>				<!--Input für Benutzereingabe-->
+							<button id="addBio" class="next">Check</button>			<!--Button zum Anstossen des Validierungsprozesses ders BioModells-->
 						</div>
 					</div>
-					<h3><a href="#">Result</a></h3>
+					<h3><a href="#">Result</a></h3>		<!--zweites Accordion Result-->
 					<div>
-						<div class="biomodell"></div>
-						<h1 id="model_id"></h1>
-						<table id="bio_table" class="display" cellspacing="0" width="100%">
-							<thead>
-								<tr>
+						<div class="biomodell"></div>		<!--Platz für Wartenachricht bzw. Rückmeldung-->
+						<h1 id="model_id_bio"></h1>				<!--Platz für Modellname und -ID-->
+						<table id="bio_table" class="display" cellspacing="0" width="100%">		<!--BioModelltabelle-->
+							<thead>								<!--Tabellenkopf-->
+								<tr>							<!--nachfolgend Spaltennamen-->
 									<th>Type</th>
 									<th>ID</th>
 									<th>Name</th>
@@ -411,29 +414,28 @@
 								</tr>
 							</thead>							
 						</table>
-						<button id="bio_det" class="det">Details</button>
+						<button id="bio_det" class="det">Details</button>			<!--siehe Button "Details" Annotation-->
 					</div>
 				</div>
 			</div>
-			<div id="fragment-3">
-				<div id="upload">
-					<h3><a href="#">Start</a></h3>
+			<div id="fragment-3">			<!--drittes Tab Upload-->
+				<div id="upload">			<!--OberAccordion Upload-->
+					<h3><a href="#">Start</a></h3>			<!--erstes Accordion Start-->
 					<div>
 						Please insert biomodel-file for checking.
 						<br></br>
-						<form id="myForm" action="../AIDV/validate" method="post" enctype="multipart/form-data">
+						<form id="myForm" action="../AIDV/validate" method="post" enctype="multipart/form-data">		<!--Form zum Hochladen einer Datei-->
 							<input type="file" size="60" name="biomodel" accept="application/xml">
-							<input id="upload_button" type="submit" value="Upload SBML">
+							<input id="upload_button" type="submit" value="Upload SBML">				<!--Button zum Anstossen des Uploadprozesses und zur Validierung des Uploads-->
 						</form>			
 						<br/>						 
-						<div id="message"></div>
+						<div id="message"></div>			<!--Platz für eine eventuelle Fehlermeldung bei einem Uploadfehler-->
 					</div>
-					<h3><a href="#">Result</a></h3>
+					<h3><a href="#">Result</a></h3>			<!--zweites Accordion Result-->
 					<div>
-						<div class="uplmodell">
-						</div>
-						<h1 id="model_id"></h1>
-						<table id="upload_table" class="display" cellspacing="0" width="100%">
+						<div class="uplmodell"></div>		<!--Platz für Wartenachricht bzw. Rückmeldung-->
+						<h1 id="model_id_upl"></h1>			<!--Platz für Modellname und -ID-->
+						<table id="upload_table" class="display" cellspacing="0" width="100%">		<!--Uploadtabelle siehe BioModellTabelle-->
 							<thead>
 								<tr>
 									<th>Type</th>
@@ -449,7 +451,7 @@
 								</tr>
 							</thead>							
 						</table>
-						<button id="upl_det" class="det">Details</button>
+						<button id="upl_det" class="det">Details</button>			<!--siehe Button "Details" Annotation-->
 					</div>
 				</div>
 			</div>
