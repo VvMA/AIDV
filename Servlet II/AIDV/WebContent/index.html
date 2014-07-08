@@ -129,7 +129,7 @@
 					var restUri="/AIDV/validate?annotation=";
 					var url=restUri+$("#search_anno").val();
 					var anno_url="", consider="", orig_url="";
-					$.getJSON(url , function(data) {
+					$.getJSON(url , function(anno) {
 						orig_url+="<p><a class='resource' href='"+anno.url+"' target='_blank'>"+anno.url+"</a></p>";
 						$.each(anno.resource, function(k,v) {
 							anno_url+="<p><a class='resource' href='"+v.url+"' target='_blank'>"+v.name+"</a></p>";
@@ -449,7 +449,7 @@
 							Please insert annotation for checking.
 							<br></br>
 							<div>
-								<input id="search_anno" value="GO:0006915"></input>
+								<input id="search_anno" value="http://identifiers.org/go/GO:0006915"></input>
 								<button id="addAnno" class="next">Check</button>
 							</div>
 						</div>
@@ -478,10 +478,10 @@
 				<div id="bioModell">
 					<h3><a href="#">Start</a></h3>
 					<div>
-						Please insert biomodel for checking.
+						Please insert a URL of a biomodel for checking.
 						<br></br>
 						<div>
-							<input id="search_bio" value="BIOMD0000000002"></input>
+							<input id="search_bio" value=""></input>
 							<button id="addBio" class="next">Check</button>
 						</div>
 					</div>
