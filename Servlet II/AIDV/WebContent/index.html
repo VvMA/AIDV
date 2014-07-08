@@ -165,18 +165,18 @@
 						if(modelelement)
 							$.each(modelelement, function(k,v) {							
 							if(this.annotations)
-								$.each(this.annotations, function(m,n) {
-										table.row.add( [
+								$.each(this.annotations, function(m,annotation) {
+									if(annotation)table.row.add( [
 											typeName,
 											v.id,
 											v.name,
-											n.url,
-											n.label,
-											n.definition,
-											n.resource,
-											n.exists,
-											n.obsolete,
-											n.consider
+											annotation.url,
+											annotation.label,
+											annotation.definition,
+											annotation.resource,
+											annotation.exists,
+											annotation.obsolete,
+											annotation.consider
 										] ).draw();
 									});
 							});
@@ -193,20 +193,19 @@
 					var restUri="/AIDV/validate?biomodel=";
 					var url=restUri+$("#search_bio").val();
 					console.log(url);
-					$.getJSON(url , function(model) {
-					
-					insertDataInTable(t_bio,"functionDefinition",model.functionDefinition);
-					insertDataInTable(t_bio,"unitDefinition",model.unitDefinition);
-					insertDataInTable(t_bio,"compatementType",model.compartementType);
-					insertDataInTable(t_bio,"speciesType",model.speciesType);
-					insertDataInTable(t_bio,"compartement",model.compartement);
-					insertDataInTable(t_bio,"species",model.species);
-					insertDataInTable(t_bio,"parameter",model.parameter);
-					insertDataInTable(t_bio,"initialAssignment",model.initialAssignment);
-					insertDataInTable(t_bio,"assignmentRule",model.assignmentRule);
-					insertDataInTable(t_bio,"constraint",model.constraint);						
-					insertDataInTable(t_bio,"reaction",model.reaction);						
-					insertDataInTable(t_bio,"event",model.event);
+					$.getJSON(url , function(model) {					
+						insertDataInTable(t_bio,"functionDefinition",model.functionDefinition);
+						insertDataInTable(t_bio,"unitDefinition",model.unitDefinition);
+						insertDataInTable(t_bio,"compatementType",model.compartementType);
+						insertDataInTable(t_bio,"speciesType",model.speciesType);
+						insertDataInTable(t_bio,"compartement",model.compartement);
+						insertDataInTable(t_bio,"species",model.species);
+						insertDataInTable(t_bio,"parameter",model.parameter);
+						insertDataInTable(t_bio,"initialAssignment",model.initialAssignment);
+						insertDataInTable(t_bio,"assignmentRule",model.assignmentRule);
+						insertDataInTable(t_bio,"constraint",model.constraint);						
+						insertDataInTable(t_bio,"reaction",model.reaction);						
+						insertDataInTable(t_bio,"event",model.event);
 						t_bio.order([8, 'desc']).draw();
 					});
 				});
@@ -217,13 +216,6 @@
 					}
 					t_upl.clear();
 				    var options = {
-				    	    beforeSend: function()
-				    	    {
-				    	        $("#progress").show();
-				    	        $("#bar").width('0%');
-				    	        $("#message").html("");
-				    	        $("#percent").html("0%");
-				    	    },
 				    	    complete: function(response)
 				    	    {
 				    	    	var model=$.parseJSON(response.responseText);
@@ -402,11 +394,7 @@
 						<form id="myForm" action="../AIDV/validate" method="post" enctype="multipart/form-data">
 							<input type="file" size="60" name="biomodel" accept="application/xml">
 							<input id="upload_button" type="submit" value="Upload SBML">
-						</form>						 
-						<div id="progress">
-							<div id="bar"></div>
-							<div id="percent">0%</div >
-						</div>
+						</form>			
 						<br/>						 
 						<div id="message"></div>
 					</div>
