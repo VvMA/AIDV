@@ -138,14 +138,14 @@
 						orig_url+="<p><a class='resource' href='"+anno.url+"' target='_blank'>"+anno.url+"</a></p>";	//Umwandeln der DirektURL in eine klickbare Version
 						if(anno.resource) {
 							$.each(anno.resource, function(k,v) {		//Umwandeln der RessourcenURL in klickbare Version(-en)
-								anno_url+="<p><a class='resource' href='"+v.url+"' target='_blank'>"+v.name+"</a></p>";
+								anno_url+="<p><a class='resource' href='"+v.url+"' target='_blank'><font size='-2'>"+v.name+"</font></a></p>";
 							})
 						} else {
 							resource="No resources available.";
 						}
 						if(anno.consider){							//Umwandeln der AlternativenURL in klickbare Version(-en)
 							$.each(anno.consider, function(k,v) {
-								consider+="<p><a class='resource' href='"+v.url+"' target='_blank'>"+v.name+"</a></p>";
+								consider+="<p><a class='resource' href='"+v.url+"' target='_blank'><font size='-2'>"+v.name+"</font></a></p>";
 							})
 						} else {
 							consider="No alternatives available.";		//Fallback falls keine Alternativen verfügbar.
@@ -172,17 +172,17 @@
 								$.each(this.annotations, function(m,annotation) {
 									if(annotation){
 										var resource="", consider="", url="";
-										url="<p><a class='resource' href='"+this.url+"' target='_blank'>"+this.url+"</a></p>";
+										url="<p><a class='resource' href='"+this.url+"' target='_blank'><font size='-2'>"+this.url+"</font></a></p>";
 										if(this.resource) {
 											$.each(this.resource, function(key,value) {
-												resource+="<p><a class='resource' href='"+value.url+"' target='_blank'>"+value.name+"</a></p>";
+												resource+="<p><a class='resource' href='"+value.url+"' target='_blank'><font size='-2'>"+value.name+"</font></a></p>";
 											}}
 										} else {
 											resource="No resources available.";
 										}
 										if(this.consider) {
 											$.each(this.consider, function(key,value) {
-												consider+="<p><a class='consider' href='"+value.url+"' target='_blank'>"+value.name+"</a></p>";
+												consider+="<p><a class='consider' href='"+value.url+"' target='_blank'><font size='-2'>"+value.name+"</font></a></p>";
 											}}
 										} else {
 											consider="No alternatives available.";
