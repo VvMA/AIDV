@@ -136,13 +136,16 @@
 					$("#search_anno").val("");						//Setzen des Eingabefeldes in Annotation auf leer
 					$.getJSON(url , function(anno) {				//Empfang der JSON
 						orig_url+="<p><a class='resource' href='"+anno.url+"' target='_blank'>"+anno.url+"</a></p>";	//Umwandeln der DirektURL in eine klickbare Version
-						$.each(anno.resource, function(k,v) {		//Umwandeln der RessourcenURL in klickbare Version(-en)
-							anno_url+="<p><a class='resource' href='"+v.url+"' target='_blank'>"+v.name+"</a></p>";
-							anno_url+=" ";
-						})
-						if(anno.consider!=null){					//Umwandeln der AlternativenURL in klickbare Version(-en)
+						if(anno.resource) {
+							$.each(anno.resource, function(k,v) {		//Umwandeln der RessourcenURL in klickbare Version(-en)
+								anno_url+="<p><a class='resource' href='"+v.url+"' target='_blank'>"+v.name+"</a></p>";
+							})
+						} else {
+							resource="No resources available.";
+						}
+						if(anno.consider){							//Umwandeln der AlternativenURL in klickbare Version(-en)
 							$.each(anno.consider, function(k,v) {
-								consider+="<br><a class='resource' href='"+v.url+"' target='_blank'>"+v.name+"</a></br>";
+								consider+="<p><a class='resource' href='"+v.url+"' target='_blank'>"+v.name+"</a></p>";
 							})
 						} else {
 							consider="No alternatives available.";		//Fallback falls keine Alternativen verfügbar.
@@ -161,27 +164,47 @@
 						counter++;
 					});
 				});
+				
 				function insertDataInTable(table,typeName,modelelement) {
-						if(modelelement)
-							$.each(modelelement, function(k,v) {							
-							if(this.annotations)
+					if(modelelement) {
+						$.each(modelelement, function(k,v) {							
+							if(this.annotations) {
 								$.each(this.annotations, function(m,annotation) {
-									if(annotation)table.row.add( [
+									if(annotation){
+										var resource="", consider="", url="";
+										url="<p><a class='resource' href='"+this.url+"' target='_blank'>"+this.url+"</a></p>";
+										if(this.resource) {
+											$.each(this.resource, function(key,value) {
+												resource+="<p><a class='resource' href='"+value.url+"' target='_blank'>"+value.name+"</a></p>";
+											}}
+										} else {
+											resource="No resources available.";
+										}
+										if(this.consider) {
+											$.each(this.consider, function(key,value) {
+												consider+="<p><a class='consider' href='"+value.url+"' target='_blank'>"+value.name+"</a></p>";
+											}}
+										} else {
+											consider="No alternatives available.";
+										}
+										table.row.add( [
 											typeName,
 											v.id,
 											v.name,
-											annotation.url,
+											url,
 											annotation.label,
 											annotation.definition,
-											annotation.resource,
+											resource,
 											annotation.exists,
 											annotation.obsolete,
-											annotation.consider
+											consider
 										] ).draw();
-									});
-							});
-					};
-				
+									}
+								});
+							}
+						});
+					}
+				};
 
 				$("#addBio").click (function () {
 					
