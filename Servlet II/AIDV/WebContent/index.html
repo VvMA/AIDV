@@ -184,20 +184,20 @@
 									if(annotation){										//Test auf Inhalt von Annotation
 										var resource="", consider="", url="";			//Ressource(-n), Alternative(-n) und Link der Annotation
 										url="<p><a class='resource' href='"+this.url+"' target='_blank'>"+this.url+"</a></p>";		//Setzen der AnnotationsURL
-										if(this.resource) {									//Test auf vorhandene Ressourcen
-											$.each(this.resource, function(key,value) {		//Iteration durch Ressourcen und Umwandeln in kleinere klickbare Links, öffnen in neuem Tab
+										if(annotation.resource) {									//Test auf vorhandene Ressourcen
+											$.each(annotation.resource, function(key,value) {		//Iteration durch Ressourcen und Umwandeln in kleinere klickbare Links, öffnen in neuem Tab
 												resource+="<a class='resource' href='"+value.url+"' target='_blank'><font size='-1'>"+value.name+"</font></a>";
-												if(key<(this.resource.length-1)) {
+												if(key<(annotation.resource.length-1)) {
 													resource+="<br>";						//Zeilenumbruch für bessere Lesbarkeit
 												}
 											});
 										} else {
 											resource="No resources available.";				//Fallback falls keine Ressourcen verfügbar
 										}
-										if(this.consider) {									//Test auf vorhandene Alternativen
-											$.each(this.consider, function(key,value) {		//Iteration durch Alternativen und Umwandeln in kleinere klickbare Links, öffnen in neuem Tab
+										if(annotation.consider) {									//Test auf vorhandene Alternativen
+											$.each(annotation.consider, function(key,value) {		//Iteration durch Alternativen und Umwandeln in kleinere klickbare Links, öffnen in neuem Tab
 												consider+="<a class='consider' href='"+value.url+"' target='_blank'><font size='-1'>"+value.name+"</font></a>";
-												if(key<(this.consider.length-1)) {
+												if(key<(annotation.consider.length-1)) {
 													consider+="<br>";						//Zeilenumbruch für bessere Lesbarkeit
 												}
 											});
