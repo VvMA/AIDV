@@ -17,8 +17,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class Validator {
 	/**
-	 * @param uri
-	 * @return
+	 * @param uri identifiers.org or miriam registry uri (e.g. "http://identifiers.org/go/GO:0006915" or "urn:miriam:go:GO%3A0007274")
+	 * @return json representation of a annotation
 	 */
 	public static String getAnnotation(String uri) {
 		String json=null;
@@ -49,8 +49,8 @@ public class Validator {
 		return json;
 	}
 	/**
-	 * @param url
-	 * @return
+	 * @param url url of a given xml file, must be directly downloadable
+	 * @return json representation of a Biomodel
 	 */
 	public static String getBiomodel(String url) {
 		String json=null;
@@ -65,8 +65,8 @@ public class Validator {
 		return json;
 	}
 	/**
-	 * @param file
-	 * @return
+	 * @param file xml file of a given biomodel
+	 * @return json representation of a Biomodel
 	 */
 	public static String getBiomodel(File file) {
 		String json=null;

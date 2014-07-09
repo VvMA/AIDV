@@ -17,8 +17,7 @@ public class ChEBIBrowser extends OntologyBrowser {
 	}
 	@Override
 	public Annotation get(Annotation annotation) throws IOException {
-		    try {
-
+		try {
 		      // Create client
 		      ChebiWebServiceClient client = new ChebiWebServiceClient();
 		      Entity entity = client.getCompleteEntity(annotation.id);
