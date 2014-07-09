@@ -20,8 +20,16 @@ import uk.ac.ebi.miriam.lib.MiriamLink;
 import aidv.classes.Annotation;
 import aidv.classes.Link;
 
+/**
+ * @author Stefan
+ *
+ */
 public class Identifiers_org extends OntologyBrowser{
 	
+	/** Convert miriam urn to identifiers.org url 
+	 * @param urn Miriam Registry URN 
+	 * @return identifiers.org url
+	 */
 	public static String transformUrn(String urn) {
         MiriamLink link = new MiriamLink();
         link.setAddress("http://www.ebi.ac.uk/miriamws/main/MiriamWebServices");    
@@ -29,6 +37,12 @@ public class Identifiers_org extends OntologyBrowser{
 		return url;
 	}
 	
+	/** Helpermethod for connecting to the InterPro websites
+	 * 
+	 * @param urlToGet url representing the ResultPage for the entry of a given annotation
+	 * @return ResultPage for the entry of a given annotation of InterPro
+	 * @throws IOException
+	 */
 	public static String connect(String urlToGet) throws IOException {
 	 	URL url;
         HttpURLConnection conn;
@@ -50,6 +64,9 @@ public class Identifiers_org extends OntologyBrowser{
         return result;
 	}
 	
+	/* (non-Javadoc)
+	 * @see aidv.classes.browser.OntologyBrowser#get(aidv.classes.Annotation)
+	 */
 	public  Annotation get(Annotation a){
 		String result=null;
 		String url =a.getUrl();
@@ -86,12 +103,4 @@ public class Identifiers_org extends OntologyBrowser{
 		else return null;
 		
 	}
-	
-	 public static void main(String[] args) throws Exception{
-		 Annotation a =new Annotation("http://identifiers.org/interpro/IPR002394");
-		 OntologyBrowser identifiers=new Identifiers_org();
-		 a= identifiers.get(a);
-		 ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	
-		 System.out.println(ow.writeValueAsString(a));
-	 }
 }

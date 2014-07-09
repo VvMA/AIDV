@@ -8,7 +8,14 @@ import aidv.classes.Annotation;
 import aidv.classes.Ontology;
 import uk.ac.ebi.chebi.webapps.chebiWS.client.ChebiWebServiceClient;
 import uk.ac.ebi.chebi.webapps.chebiWS.model.*;
+/**
+ * @author Stefan
+ *
+ */
 public class ChEBIBrowser extends OntologyBrowser {
+	/**
+	 * 
+	 */
 	@SuppressWarnings("serial")
 	public ChEBIBrowser() {
 		this.setOntologys(new ArrayList<Ontology>(){

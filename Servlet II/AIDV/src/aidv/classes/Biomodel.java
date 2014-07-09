@@ -2,10 +2,15 @@ package aidv.classes;
 
 import java.util.List;
 
+/**
+ * @author Stefan
+ *
+ */
 public class Biomodel {
 	
 	String id;
 	String name;
+	// Modelelements represting the different parts of an sbml
 	List<ModelElement> functionDefinition;
 	List<ModelElement> unitDefinition;
 	List<ModelElement> compartementType;
@@ -18,6 +23,7 @@ public class Biomodel {
 	List<ModelElement> constraint;
 	List<ModelElement> reaction;
 	List<ModelElement> event;
+	
 	public List<ModelElement> getCompartementType() {
 		return compartementType;
 	}

@@ -8,6 +8,10 @@ import uk.ac.ebi.sbo.ws.client.SBOLink;
 import aidv.classes.Annotation;
 import aidv.classes.Ontology;
 
+/**
+ * @author Stefan
+ *
+ */
 public class SboBrowser extends OntologyBrowser{
 
 	@SuppressWarnings("serial")

@@ -2,6 +2,10 @@ package aidv.classes;
 
 import java.util.List;
 
+/**
+ * @author Stefan
+ *
+ */
 public class Annotation {
 	
 	public String id;

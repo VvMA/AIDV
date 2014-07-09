@@ -1,5 +1,9 @@
 package aidv.classes;
 
+/**
+ * @author Stefan
+ *
+ */
 public class Link {
 	
 	String name;
