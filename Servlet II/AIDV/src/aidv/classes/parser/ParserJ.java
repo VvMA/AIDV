@@ -167,6 +167,9 @@ public class ParserJ {
 			Element e = (Element) node;
 			result[0] = (e.getAttribute("id"));
 			result[1] = (e.getAttribute("name"));
+			if(result[0].equals(result[1])){
+				result[1]=null;
+			}
 		}
 		return result;
 	}
