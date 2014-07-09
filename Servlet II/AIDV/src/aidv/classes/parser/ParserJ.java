@@ -17,17 +17,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
 import aidv.classes.Annotation;
 import aidv.classes.Biomodel;
 import aidv.classes.BrowserFactory;
@@ -40,7 +34,14 @@ import aidv.classes.browser.OntologyBrowser;
 public class ParserJ {
 	Document document;
 	
-	
+	/**
+	 * Constructor
+	 * accepts a Biomodell as File, Stream or URL 
+	 * @param f, iStream, url 
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
 	public ParserJ(File f) throws ParserConfigurationException, SAXException, IOException{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
@@ -56,32 +57,43 @@ public class ParserJ {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		this.document = builder.parse(url);
 	}
-	
+	/**
+	 * calls build to create a Biomodel from document
+	 * @return Biomodel
+	 * @throws Exception
+	 */
 	public Biomodel getBiomodel() throws Exception{
 		return build(document);
 	}
+	/**
+	 * 
+	 * @param tag (tag value that we're searching for)
+	 * @param d (Document that should be searched)
+	 * @return List
+	 * @throws Exception
+	 */
 	
 	private List<ModelElement> better_read(String tag, Document d)
 			throws Exception {
 		
-		NodeList n_list = d.getElementsByTagName(tag);
+		NodeList n_list = d.getElementsByTagName(tag);//gets all nodes by tag
 		List<ModelElement> result = new ArrayList<ModelElement>();
 		int it_o = n_list.getLength();
 		for (int i = 0; i < it_o; i++) {
 			Node node = n_list.item(i);
-			List<String> temp = getHTML(StringtoArray(nodeasString(node)));
-			if(temp.isEmpty()){
-				return null;
-			}
+			List<String> temp = getHTML(StringtoArray(nodeasString(node)));//all nodes were transformed into String, split into single lines and searched for AnnotationLinks
+			//if(temp.isEmpty()){
+			//	return null; //if the node did not contain any AnnotationLinks the result is null
+			//}
 			Element e = (Element) node;
 			ModelElement m1 = new ModelElement();
 			List<Annotation> res = new ArrayList<Annotation>();
 			int it = temp.size();
 			for (int j = 0; j < it; j++) {
 				Annotation a1 = new Annotation(temp.get(j));
-				res.add(a1);
+				res.add(a1); //adds found AnnotationLinks
 			}
-			m1.setId(e.getAttribute("id"));
+			m1.setId(e.getAttribute("id")); //sets id and name
 			if(e.hasAttribute("name"))
 				m1.setName(e.getAttribute("name"));
 			m1.setAnnotations(res);
@@ -90,7 +102,12 @@ public class ParserJ {
 		if(result.size()==0)return null;
 		return result;
 	}
-
+	/**
+	 * builds Biomodel from Document d by requesting values for every node
+	 * @param d
+	 * @return Biomodel
+	 * @throws Exception
+	 */
 	private Biomodel build(Document d) throws Exception {
 		Biomodel model = new Biomodel();
 
@@ -135,7 +152,11 @@ public class ParserJ {
 		
 		return model;
 	}
-
+	/**
+	 * gets id and name for Biomodel
+	 * @param d
+	 * @return String[]
+	 */
 	private String[] getName(Document d) {
 		NodeList m_list = d.getElementsByTagName("model");
 		String[] result = new String[2];
@@ -149,7 +170,13 @@ public class ParserJ {
 		}
 		return result;
 	}
-
+	/**
+	 * transforms a node to String
+	 * @param node
+	 * @return String
+	 * @throws TransformerFactoryConfigurationError
+	 * @throws TransformerException
+	 */
 	private String nodeasString(Node node)
 			throws TransformerFactoryConfigurationError, TransformerException {
 		StringWriter str = new StringWriter();
@@ -159,12 +186,19 @@ public class ParserJ {
 
 		return str.toString();
 	}
-
+	/**
+	 * splits String to single lines
+	 * @param xml
+	 * @return String[]
+	 */
 	private String[] StringtoArray(String xml) {
 		String[] result = xml.split("<");
 		return result;
 	}
-
+	/**
+	 * 
+	 * @param elements
+	 */
 	private void validateAnnotations(List<ModelElement> elements){
 		List<Annotation>annotations=new ArrayList<Annotation>();
 		if(elements!=null)
@@ -193,6 +227,11 @@ public class ParserJ {
 			}
 		}
 	}
+	/**
+	 * gets AnnotationLinks from a String
+	 * @param split
+	 * @return List<String>
+	 */
 	private List<String> getHTML(String[] split) {
 
 		List<String> a1 = new ArrayList<String>();
