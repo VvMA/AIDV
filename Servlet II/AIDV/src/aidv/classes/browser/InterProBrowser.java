@@ -17,7 +17,7 @@ import aidv.classes.Annotation;
 import aidv.classes.Link;
 import aidv.classes.Ontology;
 
-public class InterProBrowser extends OntologyBrowser{
+public class InterProBrowser extends OyBrowser{
 	@SuppressWarnings("serial")
 	public InterProBrowser() {
 		this.setOntologys(new ArrayList<Ontology>(){

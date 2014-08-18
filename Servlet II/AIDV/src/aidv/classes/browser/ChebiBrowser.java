@@ -12,7 +12,7 @@ import uk.ac.ebi.chebi.webapps.chebiWS.model.*;
  * @author Stefan
  *
  */
-public class ChEBIBrowser extends OntologyBrowser {
+public class ChEBIBrowser extends OyBrowser {
 	/**
 	 * 
 	 */
