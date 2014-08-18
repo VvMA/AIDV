@@ -18,7 +18,7 @@ public abstract class OntologyBrowser extends Thread{
 	
 	/** main Method for populating a given Annotation with information,
 	 * @param annotation input has to contain a identifiers.org url or miriam urn to proceed
-	 * @return Annotation
+	 * @return Annotation with information of a registered Ontology (see above)
 	 * @throws IOException
 	 */
 	public abstract Annotation get(Annotation annotation) throws IOException;
