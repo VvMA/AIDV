@@ -13,7 +13,7 @@ import aidv.classes.Ontology;
  */
 public abstract class OntologyBrowser extends Thread{
 	protected Annotation annotation;
-	// each OntologyBrowser needs to register 1 to multiple Ontologies 
+	//// each OntologyBrowser needs to register 1 to multiple Ontologies 
 	protected List<Ontology> ontologys=new ArrayList<Ontology>();
 	
 	/** main Method for populating a given Annotation with information,
