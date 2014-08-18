@@ -30,7 +30,7 @@ import aidv.classes.OntologyFactory;
 import aidv.classes.ModelElement;
 import aidv.classes.Ontology;
 import aidv.classes.browser.Identifiers_org;
-import aidv.classes.browser.OyBrowser;
+import aidv.classes.browser.OntologyBrowser;
 
 public class ParserJ{
 	
@@ -217,7 +217,7 @@ public class ParserJ{
 					System.out.println(annotation.getUrl());
 				}
 				else{
-						OyBrowser identifiers=new Identifiers_org();
+						OntologyBrowser identifiers=new Identifiers_org();
 						try {
 							annotation=identifiers.get(annotation);
 						}catch(Exception e) {
@@ -225,7 +225,7 @@ public class ParserJ{
 						}				
 						if(annotation!=null) {
 							Ontology ontology=OntologyFactory.getOntology(annotation);
-							OyBrowser oBrowser=BrowserFactory.getBrowser(ontology);					
+							OntologyBrowser oBrowser=BrowserFactory.getBrowser(ontology);					
 							if(oBrowser!=null) {		
 								try {
 									annotation=oBrowser.get(annotation);							

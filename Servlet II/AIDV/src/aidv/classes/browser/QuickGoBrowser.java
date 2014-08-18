@@ -23,7 +23,7 @@ import aidv.classes.Annotation;
 import aidv.classes.Link;
 import aidv.classes.Ontology;
 
-public class QuickGoBrowser extends OyBrowser{
+public class QuickGoBrowser extends OntologyBrowser{
 	
 	@SuppressWarnings("serial")
 	public QuickGoBrowser() {

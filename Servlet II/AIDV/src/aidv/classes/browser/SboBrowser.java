@@ -12,7 +12,7 @@ import aidv.classes.Ontology;
  * @author Stefan
  *
  */
-public class SboBrowser extends OyBrowser{
+public class SboBrowser extends OntologyBrowser{
 
 	@SuppressWarnings("serial")
 	public SboBrowser() {

@@ -24,7 +24,7 @@ import aidv.classes.Link;
  * @author Stefan
  *
  */
-public class Identifiers_org extends OyBrowser{
+public class Identifiers_org extends OntologyBrowser{
 	
 	/** Convert miriam urn to identifiers.org url 
 	 * @param urn Miriam Registry URN 
