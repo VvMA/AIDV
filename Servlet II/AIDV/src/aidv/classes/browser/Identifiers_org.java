@@ -77,7 +77,7 @@ public class Identifiers_org extends OntologyBrowser{
 			result=connect(url);
 			}
 			catch(IOException e) {
-				e.printStackTrace();
+				a.setExists(false);
 			}
 		}
 		else if(url.matches("urn:miriam:.+")) {
@@ -86,21 +86,23 @@ public class Identifiers_org extends OntologyBrowser{
 		}
 		if(result!=null) {
 			Document doc = Jsoup.parse(result);
-			Elements resources=	doc.getElementsByClass("resource");		
+			Elements resources=	doc.select("#content").first().getElementsByClass("resource_info");		
 			Annotation a1=new Annotation();
 			a1.id=doc.select("div.info:nth-child(1) > span:nth-child(1)").first().text();
 			a1.setUrl(a.getUrl());
 			a1.setExists(true);
 			ArrayList<Link>links=new ArrayList<Link>();
+			System.out.println(resources.size());
 			for(Element resource: resources) {
-				String href=resource.select("div.resource_info > a").get(0).attr("href");
-				String name=resource.select("div.resource_info > a > span.desc").get(0).text();
+				String href=resource.getElementsByClass("format").select("a").get(0).attr("href");
+				String name=resource.select("span.institution").get(0).text();
 				links.add(new Link(name,href));
+				System.out.println(resource.select("span.institution").get(0).text());
 			}
 			a1.setResource(links);
 			return a1;
 		}
-		else return null;
+		else return a;
 		
 	}
 }

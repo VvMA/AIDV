@@ -22,6 +22,9 @@ public class ChEBIBrowser extends OntologyBrowser {
 	        {add(Ontology.CHEBI);}
 	    });		
 	}
+	/* (non-Javadoc)
+	 * @see aidv.classes.browser.OntologyBrowser#get(aidv.classes.Annotation)
+	 */
 	@Override
 	public Annotation get(Annotation annotation) throws IOException {
 		try {

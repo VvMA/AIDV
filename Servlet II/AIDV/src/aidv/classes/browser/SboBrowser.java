@@ -20,6 +20,9 @@ public class SboBrowser extends OntologyBrowser{
 	        {add(Ontology.SBO);}
 	    });		
 	}
+	/* (non-Javadoc)
+	 * @see aidv.classes.browser.OntologyBrowser#get(aidv.classes.Annotation)
+	 */
 	@Override
 	public Annotation get(Annotation annotation) throws IOException {
 	    // creation of the link to the SBO Web Services

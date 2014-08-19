@@ -31,6 +31,9 @@ public class QuickGoBrowser extends OntologyBrowser{
 	        {add(Ontology.GO);}
 	    });		
 	}	
+	/* (non-Javadoc)
+	 * @see aidv.classes.browser.OntologyBrowser#get(aidv.classes.Annotation)
+	 */
 	@Override
 	public Annotation get(Annotation annotation) throws IOException {
 		

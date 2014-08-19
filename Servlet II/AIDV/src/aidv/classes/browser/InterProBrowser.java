@@ -24,7 +24,7 @@ public class InterProBrowser extends OntologyBrowser{
 	        {add(Ontology.INTERPRO);}
 	    });		
 	}
-	/** Helpermethod for connecting to the InterPro websites
+	/** Helpermethod for connecting to the InterPro website
 	 * 
 	 * @param urlToGet url representing the ResultPage for the entry of a given annotation
 	 * @return ResultPage for the entry of a given annotation of InterPro
@@ -53,6 +53,7 @@ public class InterProBrowser extends OntologyBrowser{
 	/* (non-Javadoc)
 	 * @see aidv.classes.browser.OntologyBrowser#get(aidv.classes.Annotation)
 	 */
+	@Override
 	public  Annotation get(Annotation a){
 		String result=null;
 		String url =a.getResource().get(0).getUrl();
@@ -66,7 +67,7 @@ public class InterProBrowser extends OntologyBrowser{
 		if(result!=null) {
 			a.setObsolete(false);
 			Document doc = Jsoup.parse(result);
-			a.setLabel(doc.select(".strapline").html());
+			a.setLabel(doc.select(".strapline").text());
 			a.setDefinition(doc.select("div.entry_desc").text());
 		}
 		return a;

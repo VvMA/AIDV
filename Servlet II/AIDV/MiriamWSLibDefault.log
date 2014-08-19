@@ -1,0 +1,2 @@
+0    [main] INFO  uk.ac.ebi.miriam.lib.MiriamLink  - Address used: http://www.ebi.ac.uk/miriamws/main/MiriamWebServices
+6    [main] INFO  uk.ac.ebi.miriam.lib.MiriamLink  - If this address is not correct, use 'setAddress()' to change it.

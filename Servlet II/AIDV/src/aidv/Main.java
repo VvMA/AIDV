@@ -96,7 +96,6 @@ public class Main extends HttpServlet {
                    
 		            PrintWriter out = response.getWriter();
 		 		    response.setContentType("text/plain");
-		 		   // After file extraction get the json representation of biomodel and print to response
 		 		    String json=Validator.getBiomodel(file);
 		 			out.println(json);
                 }
