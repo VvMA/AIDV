@@ -56,7 +56,13 @@ public class InterProBrowser extends OntologyBrowser{
 	@Override
 	public  Annotation get(Annotation a){
 		String result=null;
-		String url =a.getResource().get(0).getUrl();
+		Link interpro=null;
+		for(Link link:a.getResource()) {
+			if(link.getUrl().contains("http://www.ebi.ac.uk/interpro/"))
+				interpro=link;
+		}
+		String url =interpro.getUrl();
+		System.out.println(url);
 		try {
 			result=connect(url);
 		}
@@ -67,8 +73,18 @@ public class InterProBrowser extends OntologyBrowser{
 		if(result!=null) {
 			a.setObsolete(false);
 			Document doc = Jsoup.parse(result);
-			a.setLabel(doc.select(".strapline").text());
-			a.setDefinition(doc.select("div.entry_desc").text());
+			Elements warning=doc.select("#search-results > div:nth-child(2)");
+			if(warning!=null) {
+				if(warning.text().contains("did not match any records in our database"))
+					a.setExists(false);
+			}
+			else {
+				a.setLabel(doc.select(".strapline").text());
+				a.setDefinition(doc.select("div.entry_desc").text());
+			}
+		}
+		else {
+			a.setExists(false);
 		}
 		return a;
 		

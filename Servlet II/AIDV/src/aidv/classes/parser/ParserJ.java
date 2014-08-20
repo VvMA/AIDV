@@ -35,6 +35,7 @@ import aidv.classes.browser.OntologyBrowser;
 public class ParserJ{
 	
 	Document document;
+	Biomodel biomodel;
 	Set<Annotation> annotationSet;
 	
 	/**
@@ -46,29 +47,43 @@ public class ParserJ{
 	 * @throws IOException
 	 */
 	public ParserJ(File f) throws ParserConfigurationException, SAXException, IOException{
+		this();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		this.document = builder.parse(f);
-		annotationSet=new HashSet<Annotation>();
 	}
 	public ParserJ(InputStream iStream) throws ParserConfigurationException, SAXException, IOException{
+		this();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		this.document = builder.parse(iStream);
 	}
+	public ParserJ() throws ParserConfigurationException, SAXException, IOException{
+		annotationSet=new HashSet<Annotation>();
+	}
 	public ParserJ(String url) throws ParserConfigurationException, SAXException, IOException{
+		this();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		this.document = builder.parse(url);
 	}
 	/**
-	 * calls build to create a Biomodel from document
+	 * calls build to create a Biomodel from document, if not null
 	 * @return Biomodel
 	 * @throws Exception
 	 */
 	public Biomodel getBiomodel() throws Exception{
-		return build(document);
+		if(this.biomodel==null)
+			return build(document);
+		else
+			return this.biomodel;
 	}
+	
+	public void setBiomodel(Biomodel biomodel) throws Exception{
+		this.biomodel=biomodel;
+		
+	}
+	
 	/**
 	 * 
 	 * @param tag (tag value that we're searching for)
@@ -113,48 +128,24 @@ public class ParserJ{
 	 * @throws Exception
 	 */
 	private Biomodel build(Document d) throws Exception {
-		Biomodel model = new Biomodel();
-
+		this.biomodel = new Biomodel();
 		String[] name = getName(d);
-		model.setId(name[0]);
-		model.setName(name[1]);
-		model.setFunctionDefinition(better_read("FunctionDefinition", d));
-		validateAnnotations(model.getFunctionDefinition());
-		
-		model.setUnitDefinition(better_read("unitDefinition", d));
-		validateAnnotations(model.getUnitDefinition());
-		
-		model.setCompartementType(better_read("compartementType", d));
-		validateAnnotations(model.getCompartementType());
-		
-		model.setSpeciesType(better_read("speciesType", d));
-		validateAnnotations(model.getSpeciesType());
-		
-		model.setCompartement(better_read("compartement", d));
-		validateAnnotations(model.getCompartement());
-		
-		model.setSpecies(better_read("species", d));
-		validateAnnotations(model.getSpecies());
-		
-		model.setParameter(better_read("parameter", d));
-		validateAnnotations(model.getParameter());
-		
-		model.setInitialAssignment(better_read("initialAssignment", d));
-		validateAnnotations(model.getInitialAssignment());
-		
-		model.setAssignmentRule(better_read("assignmentRule", d));
-		validateAnnotations(model.getAssignmentRule());
-		
-		model.setConstraint(better_read("constraint", d));
-		validateAnnotations(model.getConstraint());
-		
-		model.setReaction(better_read("reaction", d));
-		validateAnnotations(model.getReaction());
-		
-		model.setEvent(better_read("event", d));
-		validateAnnotations(model.getEvent());
-		
-		return model;
+		this.biomodel.setId(name[0]);
+		this.biomodel.setName(name[1]);
+		this.biomodel.setFunctionDefinition(better_read("FunctionDefinition", d));
+		this.biomodel.setUnitDefinition(better_read("unitDefinition", d));
+		this.biomodel.setCompartementType(better_read("compartementType", d));
+		this.biomodel.setSpeciesType(better_read("speciesType", d));
+		this.biomodel.setCompartement(better_read("compartement", d));
+		this.biomodel.setSpecies(better_read("species", d));
+		this.biomodel.setParameter(better_read("parameter", d));
+		this.biomodel.setInitialAssignment(better_read("initialAssignment", d));
+		this.biomodel.setAssignmentRule(better_read("assignmentRule", d));
+		this.biomodel.setConstraint(better_read("constraint", d));
+		this.biomodel.setReaction(better_read("reaction", d));
+		this.biomodel.setEvent(better_read("event", d));
+		this.validateAnnotations();
+		return this.biomodel;
 	}
 	/**
 	 * gets id and name for Biomodel
@@ -190,7 +181,6 @@ public class ParserJ{
 		Transformer t = TransformerFactory.newInstance().newTransformer();
 		t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 		t.transform(new DOMSource(node), new StreamResult(str));
-
 		return str.toString();
 	}
 	/**
@@ -201,6 +191,22 @@ public class ParserJ{
 	private String[] StringtoArray(String xml) {
 		String[] result = xml.split("<");
 		return result;
+	}
+	public void validateAnnotations() {
+		if(this.biomodel!=null) {
+			validateAnnotations(this.biomodel.getFunctionDefinition());
+			validateAnnotations(this.biomodel.getUnitDefinition());
+			validateAnnotations(this.biomodel.getCompartementType());
+			validateAnnotations(this.biomodel.getSpeciesType());
+			validateAnnotations(this.biomodel.getCompartement());
+			validateAnnotations(this.biomodel.getSpecies());
+			validateAnnotations(this.biomodel.getParameter());
+			validateAnnotations(this.biomodel.getInitialAssignment());
+			validateAnnotations(this.biomodel.getAssignmentRule());
+			validateAnnotations(this.biomodel.getConstraint());
+			validateAnnotations(this.biomodel.getReaction());
+			validateAnnotations(this.biomodel.getEvent());
+		}
 	}
 	/**
 	 * 
@@ -213,30 +219,31 @@ public class ParserJ{
 			annotations=element.getAnnotations();
 			int index=0;
 			for(Annotation annotation:annotations) {
+				System.out.println(annotation.getUrl());
 				if(annotationSet.contains(annotation)) {
-					System.out.println(annotation.getUrl());
+					System.out.println("contains");
 				}
 				else{
-						OntologyBrowser identifiers=new Identifiers_org();
-						try {
-							annotation=identifiers.get(annotation);
-						}catch(Exception e) {
-							e.printStackTrace();
-						}				
-						if(annotation!=null) {
-							Ontology ontology=OntologyFactory.getOntology(annotation);
-							OntologyBrowser oBrowser=BrowserFactory.getBrowser(ontology);					
-							if(oBrowser!=null) {		
-								try {
-									annotation=oBrowser.get(annotation);							
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
+					OntologyBrowser identifiers=new Identifiers_org();
+					try {
+						annotation=identifiers.get(annotation);
+					}catch(Exception e) {
+						e.printStackTrace();
+					}				
+					if(annotation!=null) {
+						Ontology ontology=OntologyFactory.getOntology(annotation);
+						OntologyBrowser oBrowser=BrowserFactory.getBrowser(ontology);					
+						if(oBrowser!=null) {		
+							try {
+								annotation=oBrowser.get(annotation);							
+							} catch (IOException e) {
+								e.printStackTrace();
 							}
-							annotations.set(index,annotation);
 						}
-						annotationSet.add(annotation);
+						annotations.set(index,annotation);
 					}
+					annotationSet.add(annotation);
+				}
 				index++;
 			}
 		}
@@ -247,7 +254,6 @@ public class ParserJ{
 	 * @return List<String>
 	 */
 	private List<String> getHTML(String[] split) {
-
 		List<String> a1 = new ArrayList<String>();
 		String res = "rdf:resource=";
 		String res2 = "sboTerm";

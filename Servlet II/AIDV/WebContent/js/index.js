@@ -38,7 +38,7 @@ $(document).ready(function() {
 					imgLink="images/att.jpg";								//relativer Link zum Bild
 					var imgTag = '<img src="' + imgLink + '"/>';	//HTML Code zum Einbinden eines Bildes
 					$("td:eq(3)", nRow).html(imgTag);				//Setzen des Bildes als Inalt in der sichtbaren Spalte 3
-					$(nRow).css('color', 'red')						//Ändern der Schriftfarbe der Zeile in rot
+					$(nRow).css('color', 'red')		;				//Ändern der Schriftfarbe der Zeile in rot
 					break;
 			}
 			switch(aData[6]){										//Ziel Spalte 6 Obsolete
@@ -47,10 +47,10 @@ $(document).ready(function() {
 					imgLink="images/att.jpg";								//siehe Exists false
 					var imgTag = '<img src="' + imgLink + '"/>';
 					$('td:eq(4)', nRow).html(imgTag);
-					$(nRow).css('color', 'red')
+					$(nRow).css('color', 'red');
 					break;
 				case false:											//Wenn Annotation nicht obsolet, dann ...
-					$(nRow).css("color", "green")					//siehe Exists true
+					$(nRow).css("color", "green");					//siehe Exists true
 					$("td:eq(4)", nRow).html("");
 					break;
 			}
@@ -65,26 +65,32 @@ $(document).ready(function() {
 		"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 			switch(aData[7]){
 				case true:
-					$(nRow).css('color', 'green')
-					$("td:eq(6)", nRow).html("");
+					$(nRow).css('color', 'green');
+					$("td:eq(6)", nRow).html("true");
 					break;
 				case false:
 					imgLink="images/att.jpg";
-					var imgTag = '<img src="' + imgLink + '"/>';
+					var imgTag = '<img src="' + imgLink + '">false</>';
 					$("td:eq(6)", nRow).html(imgTag);
-					$(nRow).css('color', 'red')
+					$(nRow).css('color', 'red');
+					break;
+				case null:
+					$("td:eq(6)", nRow).html("unknown");
 					break;
 			}
 			switch(aData[8]){
 				case true:
 					imgLink="images/att.jpg";
-					var imgTag = '<img src="' + imgLink + '"/>';
+					var imgTag = '<img src="' + imgLink + '">true</>';
 					$('td:eq(7)', nRow).html(imgTag);
-					$(nRow).css('color', 'red')
+					$(nRow).css('color', 'red');
 					break;
 				case false:
-					$(nRow).css("color", "green")
-					$("td:eq(7)", nRow).html("");
+					$(nRow).css("color", "green");
+					$("td:eq(7)", nRow).html("false");
+					break;
+				case null:
+					$("td:eq(7)", nRow).html("unknown");
 					break;
 			}
 		}
@@ -98,14 +104,17 @@ $(document).ready(function() {
 		"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 			switch(aData[7]){
 				case true:
-					$(nRow).css('color', 'green')
+					$(nRow).css('color', 'green');
 					$("td:eq(6)", nRow).html("");
 					break;
 				case false:
 					imgLink="images/att.jpg";
 					var imgTag = '<img src="' + imgLink + '"/>';
 					$("td:eq(6)", nRow).html(imgTag);
-					$(nRow).css('color', 'red')
+					$(nRow).css('color', 'red');
+					break;
+				case null:
+					$("td:eq(6)", nRow).html("unknown");
 					break;
 			}
 			switch(aData[8]){
@@ -117,6 +126,9 @@ $(document).ready(function() {
 					break;
 				case false:
 					$(nRow).css("color", "green")
+					$("td:eq(7)", nRow).html("unknown");
+					break;
+				case null:
 					$("td:eq(7)", nRow).html("");
 					break;
 			}

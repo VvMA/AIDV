@@ -56,6 +56,7 @@ public class Validator {
 		String json=null;
 		try {
 			ParserJ parser = new ParserJ(url);
+			System.out.println("loaded");
 			Biomodel model = parser.getBiomodel();
 			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();	
 			json = ow.writeValueAsString(model);

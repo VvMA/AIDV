@@ -86,6 +86,11 @@ public class Identifiers_org extends OntologyBrowser{
 		}
 		if(result!=null) {
 			Document doc = Jsoup.parse(result);
+			if(doc.select("div.info").text().startsWith("Alternative ways")) {
+				a.setUrl(doc.select("div.info > a:nth-child(3)").get(0).attr("href").replace("http://info.","http://"));
+				return get(a);
+			}
+			else {	
 			Elements resources=	doc.select("#content").first().getElementsByClass("resource_info");		
 			Annotation a1=new Annotation();
 			a1.id=doc.select("div.info:nth-child(1) > span:nth-child(1)").first().text();
@@ -101,6 +106,7 @@ public class Identifiers_org extends OntologyBrowser{
 			}
 			a1.setResource(links);
 			return a1;
+			}
 		}
 		else return a;
 		
