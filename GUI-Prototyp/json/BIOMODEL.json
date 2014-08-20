@@ -14,14 +14,14 @@
       "label" : null,
       "definition" : null,
       "exists" : false,
-      "obsolete" : false,
+      "obsolete" : true,
       "resource" : null,
       "consider" : null
     }, {
       "url" : "http://identifiers.org/go/GO:000589",
       "label" : null,
       "definition" : null,
-      "exists" : false,
+      "exists" : true,
       "obsolete" : false,
       "resource" : null,
       "consider" : null
