@@ -22,7 +22,7 @@ import aidv.classes.ModelElement;
 public class test {
 
 	public static void main(String[] args) throws Exception {
-		for(int i=1;i<541;i++) {
+		for(int i=1;i<490;i++) {
 			String formatted = String.format("%03d", i);
 			String url="http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000"+formatted;
 			String json =connect("http://localhost:8080/AIDV/validate?biomodel="+url);

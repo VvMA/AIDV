@@ -15,11 +15,11 @@ public class ChebiTest {
 
 	public static void main(String[] args) throws IOException {
 		Annotation a=new Annotation();
-		a.id="SBO:0000255";
-		SboBrowser browser=new SboBrowser();
+		a.id="CHEBI:23091";
+		ChEBIBrowser browser=new ChEBIBrowser();
 		a=browser.get(a);
 		
-		System.out.println(a.isObsolete());
+		System.out.println(a.isExists());
 	}
 	public static String connect(String urlToGet) throws IOException {
 	 	URL url;

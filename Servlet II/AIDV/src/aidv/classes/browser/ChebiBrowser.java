@@ -40,8 +40,10 @@ public class ChEBIBrowser extends OntologyBrowser {
 		      System.out.println(entity.getChebiAsciiName());
 			  annotation.setDefinition(entity.getDefinition());
 			  annotation.setExists(true);
+			  annotation.setObsolete(false);
 
 		    } catch ( ChebiWebServiceFault_Exception e ) {
+		    	e.printStackTrace();
 		      annotation.setExists(false);
 		    }
 		return annotation;
