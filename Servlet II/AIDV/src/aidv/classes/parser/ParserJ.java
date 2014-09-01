@@ -79,9 +79,12 @@ public class ParserJ{
 			return this.biomodel;
 	}
 	
+	/**
+	 * @param biomodel
+	 * @throws Exception
+	 */
 	public void setBiomodel(Biomodel biomodel) throws Exception{
 		this.biomodel=biomodel;
-		
 	}
 	
 	/**
@@ -192,6 +195,9 @@ public class ParserJ{
 		String[] result = xml.split("<");
 		return result;
 	}
+	/**
+	 * 
+	 */
 	public void validateAnnotations() {
 		if(this.biomodel!=null) {
 			validateAnnotations(this.biomodel.getFunctionDefinition());
@@ -222,6 +228,7 @@ public class ParserJ{
 				System.out.println(annotation.getUrl());
 				if(annotationSet.contains(annotation)) {
 					System.out.println("contains");
+					// code zum anhängen bereits überprüfter annotationen
 				}
 				else{
 					OntologyBrowser identifiers=new Identifiers_org();
