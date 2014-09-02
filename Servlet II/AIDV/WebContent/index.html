@@ -8,9 +8,9 @@
 		<script src="js/jquery-1.10.2.js"></script>									<!--jQuery-->
 		<script src="js/jquery-ui-1.10.4.custom.js"></script>						<!--jQueryUI-->
 		<script src="js/jquery.dataTables.js"></script>								<!--jQuery Tabellen-->
-		<script src="http://malsup.github.com/jquery.form.js"></script>
+		<script src="http://malsup.github.com/jquery.form.js"></script>				<!--jQuery Form-Script-->
 		
-		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>					<!--ausgelagerte JS-Scripte-->
 	</head>
 	<body>
 		<img src="images/logo-sems.png" align="left" alt="SEMS">
@@ -31,7 +31,7 @@
 							Please insert annotation for checking.
 							<br></br>
 							<div>
-								<input id="search_anno" value="http://identifiers.org/go/GO:0006915"></input>		<!--Input für Nutzereingabe-->
+								<input id="search_anno" value="http://identifiers.org/go/GO:0006915" size=40></input>		<!--Input für Nutzereingabe-->
 								<button id="addAnno" class="next">Check</button>									<!--Button zum Anstossen des Validierungsprozesses der Annotation-->
 							</div>
 						</div>
@@ -63,7 +63,7 @@
 						Please insert a URL of a biomodel for checking.
 						<br></br>
 						<div>
-							<input id="search_bio" value=""></input>				<!--Input für Benutzereingabe-->
+							<input id="search_bio" value="" size=40></input>				<!--Input für Benutzereingabe-->
 							<button id="addBio" class="next">Check</button>			<!--Button zum Anstossen des Validierungsprozesses ders BioModells-->
 						</div>
 					</div>

@@ -37,7 +37,7 @@ $(document).ready(function() {
 					// Einfügen einer Bilddatei in Spalte
 					imgLink="images/att.jpg";								//relativer Link zum Bild
 					var imgTag = '<img src="' + imgLink + '"/>';	//HTML Code zum Einbinden eines Bildes
-					$("td:eq(3)", nRow).html(imgTag);				//Setzen des Bildes als Inalt in der sichtbaren Spalte 3
+					$("td:eq(3)", nRow).html(imgTag);				//Setzen des Bildes als Inhalt in der sichtbaren Spalte 3
 					$(nRow).css('color', 'red')		;				//Ändern der Schriftfarbe der Zeile in rot
 					break;
 			}
@@ -135,7 +135,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	//Funktion zum Einfügen von Daten als Zeilen in die entsprechende Tabelle
+	//Funktion zum Einfügen von Daten als Zeilen in die entsprechende Tabelle (außer Annotation)
 	
 	function insertDataInTable(table,typeName,modelelement) {			//table=Tabellenname, typeName=Name des Elements aus Modell, modelelement=Element des Modells
 		if(modelelement) {									//Test ob Element des Modells vorhanden
@@ -337,7 +337,7 @@ $(document).ready(function() {
 		}
 	});
 				
-	//Funktion zum Überprüfen der Sichtbarkeit der Spalte Definition (5)
+	//Funktion zum Überprüfen der Sichtbarkeit der Spalte Definition (5) im Tab "Upload"
 	$("#upload button").click(function(e) {
 		e.preventDefault();
 		if($(this).is(".det")){
