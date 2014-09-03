@@ -22,11 +22,11 @@ import aidv.classes.ModelElement;
 public class test {
 
 	public static void main(String[] args) throws Exception {
-		for(int i=1;i<490;i++) {
+		for(int i=439;i<542;i++) {
 			String formatted = String.format("%03d", i);
 			String url="http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000"+formatted;
 			String json =connect("http://localhost:8080/AIDV/validate?biomodel="+url);
-			System.out.println(json);
+			System.out.println(formatted);
 			Biomodel model = new ObjectMapper().readValue(json, Biomodel.class);
 			System.out.println("loaded");		
 			if(model!=null)try
@@ -53,8 +53,7 @@ public class test {
 	    	}catch( IOException e )
 	    	{
 	    		e.printStackTrace();
-	    	}
-				
+	    	}				
 		}
 	}
 	public static Set<Annotation> getAnnotations(Biomodel biomodel){

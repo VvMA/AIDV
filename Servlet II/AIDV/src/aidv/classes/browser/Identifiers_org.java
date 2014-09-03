@@ -72,7 +72,6 @@ public class Identifiers_org extends OntologyBrowser{
 		String url =a.getUrl();
 		if(url.matches("http://identifiers.org/.+")) {
 			url=url.replace("http://identifiers.org/", "http://info.identifiers.org/").concat(".html");
-			System.out.println(url);
 			try {
 			result=connect(url);
 			}
@@ -102,7 +101,6 @@ public class Identifiers_org extends OntologyBrowser{
 				String href=resource.getElementsByClass("format").select("a").get(0).attr("href");
 				String name=resource.select("span.institution").get(0).text();
 				links.add(new Link(name,href));
-				System.out.println(resource.select("span.institution").get(0).text());
 			}
 			a1.setResource(links);
 			return a1;

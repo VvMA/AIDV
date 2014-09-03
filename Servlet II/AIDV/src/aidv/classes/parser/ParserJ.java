@@ -37,6 +37,7 @@ public class ParserJ{
 	Document document;
 	Biomodel biomodel;
 	Set<Annotation> annotationSet;
+	List<Annotation> annotationList;
 	
 	/**
 	 * Constructor
@@ -60,6 +61,7 @@ public class ParserJ{
 	}
 	public ParserJ() throws ParserConfigurationException, SAXException, IOException{
 		annotationSet=new HashSet<Annotation>();
+		annotationList=new ArrayList<Annotation>();
 	}
 	public ParserJ(String url) throws ParserConfigurationException, SAXException, IOException{
 		this();
@@ -222,38 +224,38 @@ public class ParserJ{
 		List<Annotation>annotations=new ArrayList<Annotation>();
 		if(elements!=null)
 			for(ModelElement element:elements) {
-			annotations=element.getAnnotations();
-			int index=0;
-			for(Annotation annotation:annotations) {
-				System.out.println(annotation.getUrl());
-				if(annotationSet.contains(annotation)) {
-					System.out.println("contains");
-					// code zum anhängen bereits überprüfter annotationen
-				}
-				else{
-					OntologyBrowser identifiers=new Identifiers_org();
-					try {
-						annotation=identifiers.get(annotation);
-					}catch(Exception e) {
-						e.printStackTrace();
-					}				
-					if(annotation!=null) {
-						Ontology ontology=OntologyFactory.getOntology(annotation);
-						OntologyBrowser oBrowser=BrowserFactory.getBrowser(ontology);					
-						if(oBrowser!=null) {		
-							try {
-								annotation=oBrowser.get(annotation);							
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
-						annotations.set(index,annotation);
+				annotations=element.getAnnotations();
+				int index=0;
+				for(Annotation annotation:annotations) {
+					System.out.println(annotation.getUrl());
+					if(annotationSet.contains(annotation)) {
+						annotations.set(index,annotationList.get(annotationList.indexOf(annotation)));
 					}
-					annotationSet.add(annotation);
+					else{
+						OntologyBrowser identifiers=new Identifiers_org();
+						try {
+							annotation=identifiers.get(annotation);
+						}catch(Exception e) {
+							e.printStackTrace();
+						}				
+						if(annotation!=null) {
+							Ontology ontology=OntologyFactory.getOntology(annotation);
+							OntologyBrowser oBrowser=BrowserFactory.getBrowser(ontology);					
+							if(oBrowser!=null) {		
+								try {
+									annotation=oBrowser.get(annotation);							
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+							annotations.set(index,annotation);
+						}
+						annotationSet.add(annotation);
+						annotationList.add(annotation);
+					}
+					index++;
 				}
-				index++;
 			}
-		}
 	}
 	/**
 	 * gets AnnotationLinks from a String

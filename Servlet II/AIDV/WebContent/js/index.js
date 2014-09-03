@@ -66,31 +66,27 @@ $(document).ready(function() {
 			switch(aData[7]){
 				case true:
 					$(nRow).css('color', 'green');
-					$("td:eq(6)", nRow).html("true");
 					break;
 				case false:
 					imgLink="images/att.jpg";
-					var imgTag = '<img src="' + imgLink + '">false</>';
+					var imgTag = '<img src="' + imgLink + '"></>';
 					$("td:eq(6)", nRow).html(imgTag);
 					$(nRow).css('color', 'red');
 					break;
 				case null:
-					$("td:eq(6)", nRow).html("unknown");
 					break;
 			}
 			switch(aData[8]){
 				case true:
 					imgLink="images/att.jpg";
-					var imgTag = '<img src="' + imgLink + '">true</>';
+					var imgTag = '<img src="' + imgLink + '"></>';
 					$('td:eq(7)', nRow).html(imgTag);
 					$(nRow).css('color', 'red');
 					break;
 				case false:
 					$(nRow).css("color", "green");
-					$("td:eq(7)", nRow).html("false");
 					break;
 				case null:
-					$("td:eq(7)", nRow).html("unknown");
 					break;
 			}
 		}
@@ -114,7 +110,6 @@ $(document).ready(function() {
 					$(nRow).css('color', 'red');
 					break;
 				case null:
-					$("td:eq(6)", nRow).html("unknown");
 					break;
 			}
 			switch(aData[8]){
@@ -122,14 +117,12 @@ $(document).ready(function() {
 					imgLink="images/att.jpg";
 					var imgTag = '<img src="' + imgLink + '"/>';
 					$('td:eq(7)', nRow).html(imgTag);
-					$(nRow).css('color', 'red')
+					$(nRow).css('color', 'red');
 					break;
 				case false:
-					$(nRow).css("color", "green")
-					$("td:eq(7)", nRow).html("unknown");
+					$(nRow).css("color", "green");
 					break;
 				case null:
-					$("td:eq(7)", nRow).html("");
 					break;
 			}
 		}

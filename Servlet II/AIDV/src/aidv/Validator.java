@@ -32,7 +32,8 @@ public class Validator {
 			}			
 			if(annotation!=null) {
 				Ontology ontology=OntologyFactory.getOntology(annotation);
-				OntologyBrowser oBrowser=BrowserFactory.getBrowser(ontology);					
+				OntologyBrowser oBrowser=BrowserFactory.getBrowser(ontology);	
+				System.out.println(ontology);
 				if(oBrowser!=null) {		
 					try {
 						annotation=oBrowser.get(annotation);
