@@ -37,7 +37,7 @@ $(document).ready(function() {
 					// Einfügen einer Bilddatei in Spalte
 					imgLink="images/att.jpg";								//relativer Link zum Bild
 					var imgTag = '<img src="' + imgLink + '"/>';	//HTML Code zum Einbinden eines Bildes
-					$("td:eq(3)", nRow).html(imgTag);				//Setzen des Bildes als Inhalt in der sichtbaren Spalte 3
+					$("td:eq(3)", nRow).html(imgTag);				//Setzen des Bildes als Inalt in der sichtbaren Spalte 3
 					$(nRow).css('color', 'red')		;				//Ändern der Schriftfarbe der Zeile in rot
 					break;
 			}
@@ -66,6 +66,7 @@ $(document).ready(function() {
 			switch(aData[7]){
 				case true:
 					$(nRow).css('color', 'green');
+					$("td:eq(6)", nRow).html("");
 					break;
 				case false:
 					imgLink="images/att.jpg";
@@ -74,6 +75,8 @@ $(document).ready(function() {
 					$(nRow).css('color', 'red');
 					break;
 				case null:
+					$("td:eq(6)", nRow).html("unknown");
+					$(nRow).css('color', 'orange');
 					break;
 			}
 			switch(aData[8]){
@@ -85,8 +88,11 @@ $(document).ready(function() {
 					break;
 				case false:
 					$(nRow).css("color", "green");
+					$("td:eq(7)", nRow).html("");
 					break;
 				case null:
+					$("td:eq(7)", nRow).html("unknown");
+					$(nRow).css('color', 'orange');
 					break;
 			}
 		}
@@ -110,6 +116,8 @@ $(document).ready(function() {
 					$(nRow).css('color', 'red');
 					break;
 				case null:
+					$("td:eq(6)", nRow).html("unknown");
+					$(nRow).css('color', 'orange');
 					break;
 			}
 			switch(aData[8]){
@@ -117,18 +125,21 @@ $(document).ready(function() {
 					imgLink="images/att.jpg";
 					var imgTag = '<img src="' + imgLink + '"/>';
 					$('td:eq(7)', nRow).html(imgTag);
-					$(nRow).css('color', 'red');
+					$(nRow).css('color', 'red')
 					break;
 				case false:
-					$(nRow).css("color", "green");
+					$(nRow).css("color", "green")
+					$("td:eq(7)", nRow).html("");
 					break;
 				case null:
+					$("td:eq(7)", nRow).html("unknown");
+					$(nRow).css('color', 'orange');
 					break;
 			}
 		}
 	});
 	
-	//Funktion zum Einfügen von Daten als Zeilen in die entsprechende Tabelle (außer Annotation)
+	//Funktion zum Einfügen von Daten als Zeilen in die entsprechende Tabelle
 	
 	function insertDataInTable(table,typeName,modelelement) {			//table=Tabellenname, typeName=Name des Elements aus Modell, modelelement=Element des Modells
 		if(modelelement) {									//Test ob Element des Modells vorhanden
@@ -232,6 +243,7 @@ $(document).ready(function() {
 			t_bio.column(5).visible(false);				//dann wieder verstecken
 		}
 		t_bio.clear();									//Löschen des Inhalts der BioModelltabelle t_bio
+		$("#bio_table_wrapper").hide();
 		var restUri="/AIDV/validate?biomodel=";			//REST-URI
 		var url=restUri+$("#search_bio").val();			//URL für Server mit Eingabe
 		console.log(url);
@@ -250,7 +262,8 @@ $(document).ready(function() {
 			insertDataInTable(t_bio,"reaction",model.reaction);						
 			insertDataInTable(t_bio,"event",model.event);
 			t_bio.order([8, 'desc']).draw();						//Ordnen nach Spalte Obsolete (8), absteigend
-			$("#bio_table").show();									//Wiederanzeigen der Tabelle t_bio
+			$("#bio_table_wrapper").show();									//Wiederanzeigen der Tabelle t_bio
+			$("#bio_table").show();
 			$("div.biomodell").html("Your checking for: "+$("#search_bio").val()+" returned the following results.").css("color","black");
 			//if(model.name!="null")$("#model_id_bio").html(model.id+": "+model.name);//Ersetzen der Wartenachricht durch Rückmeldung und Modell-Name und ID
 			//else $("#model_id_bio").html(model.name);
@@ -261,7 +274,8 @@ $(document).ready(function() {
 		if(t_upl.column(5).visible()==true){			//Wenn Spalte Defintion(5) sichtbar,
 			t_upl.column(5).visible(false);				//dann wieder verstecken
 		}
-		t_upl.clear();									//Löschen des Inhalts der BioModelltabelle t_upl
+		$("#upload_table_wrapper").hide();
+		t_upl.clear();	//Löschen des Inhalts der BioModelltabelle t_upl
 		var options = {
 				complete: function(response)			//Wenn Upload erfolgreich
 				{
@@ -280,7 +294,9 @@ $(document).ready(function() {
 					insertDataInTable(t_upl,"reaction",model.reaction);						
 					insertDataInTable(t_upl,"event",model.event);
 					t_upl.order([8, 'desc']).draw();				//Ordnen nach Spalte Obsolete (8), absteigend
-					$("#upload_table").show();						//Wiederanzeigen der Tabelle t_upl
+					
+					$("#upload_table_wrapper").show();//Wiederanzeigen der Tabelle t_upl
+					$("#upload_table").show();
 					$("div.uplmodell").html("The validation-request for your biomodel returned the following results").css("color","black");		//Ersetzen der Wartenachricht durch Rückmeldung
 					//Ersetzen der Wartenachricht durch Rückmeldung und Modell-Name und ID
 					//	if(model.name!="null")$("#model_id_upl").html(model.id+": "+model.name);//Ersetzen der Wartenachricht durch Rückmeldung und Modell-Name und ID
@@ -330,7 +346,7 @@ $(document).ready(function() {
 		}
 	});
 				
-	//Funktion zum Überprüfen der Sichtbarkeit der Spalte Definition (5) im Tab "Upload"
+	//Funktion zum Überprüfen der Sichtbarkeit der Spalte Definition (5)
 	$("#upload button").click(function(e) {
 		e.preventDefault();
 		if($(this).is(".det")){
