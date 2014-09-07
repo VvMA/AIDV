@@ -70,7 +70,7 @@ public class ParserJ{
 		this.document = builder.parse(url);
 	}
 	/**
-	 * calls build to create a Biomodel from document, if not null
+	 * calls build to create a Biomodel from document
 	 * @return Biomodel
 	 * @throws Exception
 	 */

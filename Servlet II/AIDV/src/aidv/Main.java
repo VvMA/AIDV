@@ -18,6 +18,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  * Servlet implementation class Hello
+ * Enthält Code von http://www.codejava.net/java-ee/servlet/eclipse-file-upload-servlet-with-apache-common-file-upload
  */
 @WebServlet("/validate")
 public class Main extends HttpServlet {
